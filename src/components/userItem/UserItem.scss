@@ -1,0 +1,19 @@
+.user-item {
+  padding: 5px 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #2f2d52;
+  }
+
+  img {
+    max-height: 45px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
