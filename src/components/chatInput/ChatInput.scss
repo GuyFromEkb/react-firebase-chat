@@ -1,0 +1,50 @@
+.chat-input {
+  height: 60px;
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #2f2d52;
+    font-size: 18px;
+    padding-right: 10px;
+
+    &::placeholder {
+      color: lightgray;
+    }
+  }
+
+  &__send {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    label {
+      width: 30px;
+
+      input {
+        display: none;
+      }
+    }
+
+    img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    button {
+      border: none;
+      padding: 10px 15px;
+      color: white;
+      background-color: #8da4f1;
+      cursor: pointer;
+    }
+  }
+}
