@@ -26,6 +26,7 @@ class AuthStore {
     const { email, password, displayName, avatar } = userData;
     if (!avatar) return;
 
+    this.isLoading = true;
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
     runInAction(() => (this.user = user));
 
@@ -48,6 +49,10 @@ class AuthStore {
     });
 
     await setDoc(doc(db, "userChats", user.uid), {});
+
+    runInAction(() => {
+      this.isLoading = false;
+    });
   };
 
   logOut = async () => {
@@ -59,10 +64,12 @@ class AuthStore {
   };
 
   login = async (userData: IFormDataLogin) => {
+    this.isLoading = true;
     const { user } = await signInWithEmailAndPassword(auth, userData.email, userData.password);
 
     runInAction(() => {
       this.user = user;
+      this.isLoading = false;
     });
   };
 
