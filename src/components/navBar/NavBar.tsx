@@ -1,8 +1,9 @@
 import { FC } from "react";
-
+import { authStore } from "../../stores/authStore";
 import "./NavBar.scss";
 
 const NavBar: FC = () => {
+  const { logOut } = authStore;
   return (
     <div className="navbar">
       <div className="navbar__logo">React Chat</div>
@@ -14,7 +15,9 @@ const NavBar: FC = () => {
           />
           <div>John</div>
         </div>
-        <button className="navbar__logout">Logout</button>
+        <button onClick={logOut} className="navbar__logout">
+          Logout
+        </button>
       </div>
     </div>
   );
