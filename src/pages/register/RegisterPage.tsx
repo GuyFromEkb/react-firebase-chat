@@ -1,7 +1,8 @@
-import { toJS } from "mobx";
+import { observer } from "mobx-react-lite";
 import { FC, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import loadAvatar from "../../assets/img/addAvatar.png";
+import FormOverlay from "../../components/formOverlay/FormOverlay";
 import { authStore } from "../../stores/authStore";
 import "./RegisterPage.scss";
 
@@ -77,14 +78,16 @@ const RegisterPage: FC = () => {
             <span>Add an avatar</span>
             <input name="avatar" onChange={handleChangeForm("avatar")} accept="image/*" type="file" />
           </label>
-          <button>Sign Up</button>
+          <button className="btn">Sign Up</button>
           <div className="form-reg__footer">
             You do have an account? <Link to="/login">Login</Link>
           </div>
+
+          {authStore.isLoading && <FormOverlay />}
         </form>
       </div>
     </div>
   );
 };
 
-export default RegisterPage;
+export default observer(RegisterPage);

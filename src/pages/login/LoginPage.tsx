@@ -1,5 +1,7 @@
+import { observer } from "mobx-react-lite";
 import { FC, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import FormOverlay from "../../components/formOverlay/FormOverlay";
 import { authStore } from "../../stores/authStore";
 import "./LoginPage.scss";
 export interface IFormDataLogin {
@@ -36,15 +38,21 @@ const LoginPage: FC = () => {
         <div className="form__subtitle">Login</div>
         <form onSubmit={onSubmit} className="form-reg">
           <input onChange={handleChangeForm("email")} value={formState.email} type="text" placeholder="Email" />
-          <input onChange={handleChangeForm("password")} value={formState.password} type="Password" placeholder="Password" />
+          <input
+            onChange={handleChangeForm("password")}
+            value={formState.password}
+            type="Password"
+            placeholder="Password"
+          />
           <button>Login</button>
           <div className="form-reg__footer">
             You do not have an account? <Link to="/register">Register</Link>
           </div>
+          {authStore.isLoading && <FormOverlay />}
         </form>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default observer(LoginPage);
