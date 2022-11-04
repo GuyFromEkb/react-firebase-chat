@@ -1,8 +1,8 @@
-import { FC } from "react";
-import ChatInfo from "../chatInfo/ChatInfo";
-import ChatInput from "../chatInput/ChatInput";
-import MessageList from "../messageList/MessageList";
-import "./Chat.scss";
+import { FC } from "react"
+import ChatInfo from "../chatInfo/ChatInfo"
+import ChatInput from "../chatInput/ChatInput"
+import MessageList from "../messageList/MessageList"
+import "./Chat.scss"
 
 const Chat: FC = () => {
   return (
@@ -13,7 +13,7 @@ const Chat: FC = () => {
         <ChatInput />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Chat;
+export default Chat

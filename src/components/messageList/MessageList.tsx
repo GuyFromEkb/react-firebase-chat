@@ -1,6 +1,6 @@
-import { FC } from "react";
-import MessageItem from "../messageItem/MessageItem";
-import "./MessageList.scss";
+import { FC } from "react"
+import MessageItem from "../messageItem/MessageItem"
+import "./MessageList.scss"
 
 const MessageList: FC = () => {
   return (
@@ -11,7 +11,7 @@ const MessageList: FC = () => {
       <MessageItem />
       <MessageItem isMyMessage />
     </div>
-  );
-};
+  )
+}
 
-export default MessageList;
+export default MessageList

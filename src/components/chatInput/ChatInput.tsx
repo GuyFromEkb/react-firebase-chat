@@ -1,12 +1,12 @@
-import { FC, useState } from "react";
-import ImgIcon from "../../assets/img/img.png";
-import "./ChatInput.scss";
+import { FC, useState } from "react"
+import ImgIcon from "../../assets/img/img.png"
+import "./ChatInput.scss"
 
 const ChatInput: FC = () => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState("")
   const onSend = () => {
-    console.log("send");
-  };
+    console.log("send")
+  }
   return (
     <div className="chat-input">
       <input
@@ -16,19 +16,13 @@ const ChatInput: FC = () => {
       />
       <div className="chat-input__send">
         <label>
-          <input
-            type="file"
-            onChange={(e) => null}
-          />
-          <img
-            src={ImgIcon}
-            alt="Img Icon"
-          />
+          <input type="file" onChange={(e) => null} />
+          <img src={ImgIcon} alt="Img Icon" />
         </label>
         <button onClick={onSend}>Send</button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChatInput;
+export default ChatInput

@@ -1,9 +1,9 @@
-import { FC, useEffect, useRef } from "react";
-import cn from "classnames";
-import "./MessageItem.scss";
+import { FC } from "react"
+import cn from "classnames"
+import "./MessageItem.scss"
 
 interface IProps {
-  isMyMessage?: boolean;
+  isMyMessage?: boolean
 }
 
 const MessageItem: FC<IProps> = ({ isMyMessage = false }) => {
@@ -20,13 +20,13 @@ const MessageItem: FC<IProps> = ({ isMyMessage = false }) => {
       </div>
       <div className=" message-item__content ">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis eum dolores non molestiae dolorum et porro
-          ipsum suscipit, distinctio numquam?
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis eum dolores non molestiae
+          dolorum et porro ipsum suscipit, distinctio numquam?
         </p>
         {/* {message.img && <img src={message.img} alt="" />} */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MessageItem;
+export default MessageItem

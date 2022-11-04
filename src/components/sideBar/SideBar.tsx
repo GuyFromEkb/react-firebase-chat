@@ -1,8 +1,8 @@
-import { FC } from "react";
-import ChatList from "../chatList/ChatList";
-import NavBar from "../navBar/NavBar";
-import UserList from "../userList/UserList";
-import "./SideBar.scss";
+import { FC } from "react"
+import ChatList from "../chatList/ChatList"
+import NavBar from "../navBar/NavBar"
+import UserList from "../userList/UserList"
+import "./SideBar.scss"
 
 const SideBar: FC = () => {
   return (
@@ -13,7 +13,7 @@ const SideBar: FC = () => {
         <ChatList />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SideBar;
+export default SideBar

@@ -1,5 +1,5 @@
-import { FC } from "react";
-import "./ChatItem.scss";
+import { FC } from "react"
+import "./ChatItem.scss"
 
 const ChatItem: FC = () => {
   return (
@@ -13,7 +13,7 @@ const ChatItem: FC = () => {
         <div className="chat-item__last-message">Ok see you Ok see you Ok see you Ok see you</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChatItem;
+export default ChatItem

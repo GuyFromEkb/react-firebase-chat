@@ -1,7 +1,7 @@
-import { FC } from "react";
-import Chat from "../../components/chat/Chat";
-import SideBar from "../../components/sideBar/SideBar";
-import "./MainPage.scss";
+import { FC } from "react"
+import Chat from "../../components/chat/Chat"
+import SideBar from "../../components/sideBar/SideBar"
+import "./MainPage.scss"
 
 const MainPage: FC = () => {
   return (
@@ -13,7 +13,7 @@ const MainPage: FC = () => {
         </div>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default MainPage;
+export default MainPage

@@ -1,5 +1,5 @@
-import { FC } from "react";
-import "./Loader.scss";
+import { FC } from "react"
+import "./Loader.scss"
 
 const Loader: FC = () => {
   return (
@@ -13,7 +13,7 @@ const Loader: FC = () => {
         <circle className="loader__spinner" cx="50" cy="50" r="45" />
       </svg>
     </div>
-  );
-};
+  )
+}
 
-export default Loader;
+export default Loader

@@ -1,5 +1,5 @@
-import { FC } from "react";
-import "./UserItem.scss";
+import { FC } from "react"
+import "./UserItem.scss"
 
 const UserItem: FC = () => {
   return (
@@ -7,7 +7,7 @@ const UserItem: FC = () => {
       <img src="https://s1.1zoom.me/big3/168/Cats_Cosmonauts_Uniform_473764.jpg" alt="userAvatar" />
       <div>Jane</div>
     </div>
-  );
-};
+  )
+}
 
-export default UserItem;
+export default UserItem

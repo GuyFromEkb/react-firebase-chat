@@ -1,9 +1,9 @@
-import { FC } from "react";
-import { authStore } from "../../stores/authStore";
-import "./NavBar.scss";
+import { FC } from "react"
+import { authStore } from "../../stores/authStore"
+import "./NavBar.scss"
 
 const NavBar: FC = () => {
-  const { logOut } = authStore;
+  const { logOut } = authStore
   return (
     <div className="navbar">
       <div className="navbar__logo">React Chat</div>
@@ -20,7 +20,7 @@ const NavBar: FC = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar

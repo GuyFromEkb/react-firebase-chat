@@ -1,28 +1,28 @@
-import { observer } from "mobx-react-lite";
-import { FC } from "react";
-import { Navigate } from "react-router-dom";
-import { authStore } from "../../stores/authStore";
-import Loader from "../loader/Loader";
+import { observer } from "mobx-react-lite"
+import { FC } from "react"
+import { Navigate } from "react-router-dom"
+import { authStore } from "../../stores/authStore"
+import Loader from "../loader/Loader"
 
 interface IProtectedRoute {
-  outlet: JSX.Element;
+  outlet: JSX.Element
 }
 
 export const ProtectedRouteV2: FC<IProtectedRoute> = ({ outlet }) => {
-  const { user, isLoading } = authStore;
+  const { user, isLoading } = authStore
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader />
   }
 
   if (user) {
-    return outlet;
+    return outlet
   }
 
-  return <Navigate to="/login" />;
-};
+  return <Navigate to="/login" />
+}
 
-export default observer(ProtectedRouteV2);
+export default observer(ProtectedRouteV2)
 
 /* 
 ###

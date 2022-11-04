@@ -1,7 +1,7 @@
-import { FC } from "react";
-import UserItem from "../userItem/UserItem";
+import { FC } from "react"
+import UserItem from "../userItem/UserItem"
 
-import "./UserList.scss";
+import "./UserList.scss"
 
 const UserList: FC = () => {
   return (
@@ -10,7 +10,7 @@ const UserList: FC = () => {
       <UserItem />
       <UserItem />
     </div>
-  );
-};
+  )
+}
 
-export default UserList;
+export default UserList

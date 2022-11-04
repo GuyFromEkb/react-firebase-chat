@@ -1,12 +1,12 @@
-import { FC } from "react";
-import { Route, Routes } from "react-router-dom";
-import MainPage from "../../pages/main/MainPage";
-import LoginPage from "../../pages/login/LoginPage";
-import RegisterPage from "../../pages/register/RegisterPage";
-import "./App.scss";
-import { observer } from "mobx-react-lite";
+import { FC } from "react"
+import { Route, Routes } from "react-router-dom"
+import MainPage from "../../pages/main/MainPage"
+import LoginPage from "../../pages/login/LoginPage"
+import RegisterPage from "../../pages/register/RegisterPage"
+import "./App.scss"
+import { observer } from "mobx-react-lite"
 
-import ProtectedRouteV2 from "../protectedRoute/ProtectedRouteV2";
+import ProtectedRouteV2 from "../protectedRoute/ProtectedRouteV2"
 
 const App: FC = () => {
   return (
@@ -19,7 +19,7 @@ const App: FC = () => {
         </Route>
       </Routes>
     </>
-  );
-};
+  )
+}
 
-export default observer(App);
+export default observer(App)
