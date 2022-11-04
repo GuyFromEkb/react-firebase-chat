@@ -1,6 +1,8 @@
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   User,
@@ -55,14 +57,6 @@ class AuthStore {
     })
   }
 
-  logOut = async () => {
-    await signOut(auth)
-
-    runInAction(() => {
-      this.user = null
-    })
-  }
-
   login = async (userData: IFormDataLogin) => {
     this.isLoading = true
     const { user } = await signInWithEmailAndPassword(auth, userData.email, userData.password)
@@ -70,6 +64,31 @@ class AuthStore {
     runInAction(() => {
       this.user = user
       this.isLoading = false
+    })
+  }
+
+  loginWithGoogleAcc = async () => {
+    const provider = new GoogleAuthProvider()
+    this.isLoading = true
+
+    try {
+      const { user } = await signInWithPopup(auth, provider)
+      runInAction(() => {
+        this.user = user
+        this.isLoading = false
+      })
+    } finally {
+      runInAction(() => {
+        this.isLoading = false
+      })
+    }
+  }
+
+  logOut = async () => {
+    await signOut(auth)
+
+    runInAction(() => {
+      this.user = null
     })
   }
 
