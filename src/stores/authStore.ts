@@ -7,7 +7,7 @@ import {
   updateProfile,
   User,
 } from "firebase/auth"
-import { setDoc, doc } from "firebase/firestore"
+import { setDoc, doc, getDoc } from "firebase/firestore"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { makeAutoObservable, runInAction } from "mobx"
 import { auth, storage, db } from "../firebase"
@@ -73,6 +73,22 @@ class AuthStore {
 
     try {
       const { user } = await signInWithPopup(auth, provider)
+
+      const docRef = doc(db, "users", user.uid)
+      const docSnap = await getDoc(docRef)
+
+      if (!docSnap.exists()) {
+        await Promise.all([
+          setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+          }),
+          setDoc(doc(db, "userChats", user.uid), {}),
+        ])
+      }
+
       runInAction(() => {
         this.user = user
         this.isLoading = false
