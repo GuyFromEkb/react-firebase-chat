@@ -1,5 +1,4 @@
 import { doc, onSnapshot } from "firebase/firestore"
-import { runInAction } from "mobx"
 import { observer } from "mobx-react-lite"
 import { FC, useEffect, useState } from "react"
 import { db } from "../../firebase"
@@ -55,11 +54,6 @@ const MessageList: FC = () => {
           }
         />
       ))}
-
-      {/* <MessageItem isMyMessage />
-      <MessageItem />
-      <MessageItem />
-      <MessageItem isMyMessage /> */}
     </div>
   )
 }
