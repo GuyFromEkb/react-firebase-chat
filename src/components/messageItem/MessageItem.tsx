@@ -1,6 +1,7 @@
 import { FC } from "react"
 import cn from "classnames"
 import "./MessageItem.scss"
+import { getDateAndTime } from "../../utils/formatDate/getDateAndTime"
 
 interface IProps {
   isMyMessage: boolean
@@ -13,12 +14,7 @@ interface IProps {
 }
 
 const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date }) => {
-  console.log("datavrema", date.seconds)
-
-  // const dateProps = date.seconds as number
-  // console.log("dateProps", dateProps)
-  // const time = new Date(dateProps * 1000)
-  const messageTime = new Date(date.seconds * 1000).toString()
+  const messageTime = getDateAndTime(date.seconds)
   return (
     <div className={cn("message-item", isMyMessage && "owner")}>
       <div className="message-item__info">
