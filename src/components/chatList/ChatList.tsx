@@ -26,9 +26,11 @@ const ChatList: FC = () => {
     <div className="chat-list">
       {chats.map(([chatId, chatRecipientData]) => (
         <ChatItem
+          isMyLastMessage={user?.uid === chatRecipientData.lastMessage?.senderId}
+          lastMessage={chatRecipientData.lastMessage}
+          userInfo={chatRecipientData.userInfo}
           toggleChat={() => toggleCurrentChat(chatId, chatRecipientData.userInfo)}
           key={chatId}
-          {...chatRecipientData.userInfo}
         />
       ))}
     </div>

@@ -1,21 +1,25 @@
+import { observer } from "mobx-react-lite"
 import { FC } from "react"
-import { IUserChatInfo } from "../../stores/chatStore"
+import { ICurrentUserChats, IUserChatInfo } from "../../stores/chatStore"
 import "./ChatItem.scss"
 
-interface IProps extends IUserChatInfo {
+interface IProps extends Omit<ICurrentUserChats, "date"> {
   toggleChat: () => void
+  isMyLastMessage: boolean
 }
 
-const ChatItem: FC<IProps> = ({ displayName, photoURL, uid, toggleChat }) => {
+const ChatItem: FC<IProps> = ({ userInfo, lastMessage, toggleChat, isMyLastMessage }) => {
   return (
     <div onClick={toggleChat} className="chat-item">
-      <img src={photoURL} alt="userAvatar" />
+      <img src={userInfo.photoURL} alt="userAvatar" />
       <div className="chat-item__right-side">
-        <div className="chat-item__name">{displayName}</div>
-        <div className="chat-item__last-message">Ok see you Ok see you Ok see you Ok see you</div>
+        <div className="chat-item__name">{userInfo.displayName}</div>
+        <div className="chat-item__last-message">
+          {isMyLastMessage && "You:"} {lastMessage?.text}
+        </div>
       </div>
     </div>
   )
 }
 
-export default ChatItem
+export default observer(ChatItem)
