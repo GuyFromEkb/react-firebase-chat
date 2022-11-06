@@ -1,11 +1,17 @@
 import { FC } from "react"
+import { IUser } from "../../stores/usersStore"
 import "./UserItem.scss"
 
-const UserItem: FC = () => {
+interface IUserItem {
+  displayName: string
+  photoUrl?: string
+  onCreateChat: () => void
+}
+const UserItem: FC<IUserItem> = ({ displayName, photoUrl, onCreateChat }) => {
   return (
-    <div className="user-item">
-      <img src="https://s1.1zoom.me/big3/168/Cats_Cosmonauts_Uniform_473764.jpg" alt="userAvatar" />
-      <div>Jane</div>
+    <div onClick={onCreateChat} className="user-item">
+      <img src={photoUrl ? photoUrl : ""} alt={`${displayName} avatar`} />
+      <div>{displayName}</div>
     </div>
   )
 }
