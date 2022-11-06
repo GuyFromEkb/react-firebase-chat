@@ -1,15 +1,17 @@
 import { FC } from "react"
+import { IUserChatInfo } from "../../stores/chatStore"
 import "./ChatItem.scss"
 
-const ChatItem: FC = () => {
+interface IProps extends IUserChatInfo {
+  toggleChat: () => void
+}
+
+const ChatItem: FC<IProps> = ({ displayName, photoURL, uid, toggleChat }) => {
   return (
-    <div className="chat-item">
-      <img
-        src="https://catherineasquithgallery.com/uploads/posts/2021-02/1612275766_173-p-kot-na-fioletovom-fone-206.jpg"
-        alt="userAvatar"
-      />
+    <div onClick={toggleChat} className="chat-item">
+      <img src={photoURL} alt="userAvatar" />
       <div className="chat-item__right-side">
-        <div className="chat-item__name">Tom</div>
+        <div className="chat-item__name">{displayName}</div>
         <div className="chat-item__last-message">Ok see you Ok see you Ok see you Ok see you</div>
       </div>
     </div>
