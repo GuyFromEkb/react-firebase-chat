@@ -3,26 +3,30 @@ import cn from "classnames"
 import "./MessageItem.scss"
 
 interface IProps {
-  isMyMessage?: boolean
+  isMyMessage: boolean
+  avatarUrl: string
+  text: string
+  date: {
+    seconds: number
+    nanoseconds: number
+  }
 }
 
-const MessageItem: FC<IProps> = ({ isMyMessage = false }) => {
+const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date }) => {
+  console.log("datavrema", date.seconds)
+
+  // const dateProps = date.seconds as number
+  // console.log("dateProps", dateProps)
+  // const time = new Date(dateProps * 1000)
+  const messageTime = new Date(date.seconds * 1000).toString()
   return (
     <div className={cn("message-item", isMyMessage && "owner")}>
       <div className="message-item__info">
-        <img
-          src={
-            "https://avatars.mds.yandex.net/i?id=abf32680af07f995106870120035fe948f2aeebd-7012254-images-thumbs&n=13"
-          }
-          alt="avatar"
-        />
-        <span>just now</span>
+        <img src={avatarUrl} alt="avatar" />
+        <span>{messageTime}</span>
       </div>
       <div className=" message-item__content ">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis eum dolores non molestiae
-          dolorum et porro ipsum suscipit, distinctio numquam?
-        </p>
+        <p>{text}</p>
         {/* {message.img && <img src={message.img} alt="" />} */}
       </div>
     </div>
