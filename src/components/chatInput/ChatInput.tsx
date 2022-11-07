@@ -2,17 +2,13 @@ import { observer } from "mobx-react-lite"
 import { FC, useEffect, useState } from "react"
 import ImgIcon from "../../assets/img/img.png"
 import { authStore } from "../../stores/authStore"
-import { chatStore } from "../../stores/chatStore"
+import { messageStore } from "../../stores/messageStore"
 import "./ChatInput.scss"
 
 const ChatInput: FC = () => {
-  const { currentChatInfo, postMessage } = chatStore
+  const { postMessage } = messageStore
   const { user } = authStore
   const [text, setText] = useState("")
-
-  useEffect(() => {
-    console.log("currentChatId From Input", currentChatInfo.id)
-  }, [currentChatInfo.id])
 
   const onSend = () => {
     console.log("send")
