@@ -1,9 +1,10 @@
 import { doc, onSnapshot } from "firebase/firestore"
 import { observer } from "mobx-react-lite"
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { db } from "../../firebase"
 import { authStore } from "../../stores/authStore"
 import { chatStore } from "../../stores/chatStore"
+import { messageStore } from "../../stores/messageStore"
 import MessageItem from "../messageItem/MessageItem"
 import "./MessageList.scss"
 
@@ -25,23 +26,24 @@ export interface IMessage {
 const MessageList: FC = () => {
   const { user } = authStore
   const { currentChatInfo } = chatStore
-  const [messages, setMessages] = useState<IMessage[]>([])
+  const { subToFecthMessages, messages, reset } = messageStore
+  const refLastMessage = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!currentChatInfo.id) return
+    if (!currentChatInfo?.id) return
 
-    const docRef = doc(db, "chats", currentChatInfo.id)
+    const unsub = subToFecthMessages(currentChatInfo)
 
-    onSnapshot(docRef, (doc) => {
-      const messages = doc.data()
-      setMessages(messages?.messages! as IMessage[])
-      console.log("messages", messages)
-    })
-  }, [currentChatInfo.id])
+    return () => {
+      unsub()
+      reset()
+    }
+    // eslint-disable-next-line
+  }, [currentChatInfo?.id])
 
   return (
     <div className="message-list">
-      {messages.map((message) => (
+      {messages.map((message, idx) => (
         <MessageItem
           key={message.id}
           date={message.date}
@@ -50,8 +52,9 @@ const MessageList: FC = () => {
           avatarUrl={
             message.senderId === user?.uid
               ? user.photoURL!
-              : currentChatInfo.recipientUserInfo.photoURL
+              : currentChatInfo?.recipientUserInfo.photoURL
           }
+          refLastMessage={idx === 0 ? refLastMessage : undefined}
         />
       ))}
     </div>
