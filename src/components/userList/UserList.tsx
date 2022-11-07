@@ -1,7 +1,5 @@
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
 import { observer } from "mobx-react-lite"
-import { FC, useState } from "react"
-import { db } from "../../firebase"
+import { FC, useEffect } from "react"
 import { authStore } from "../../stores/authStore"
 import { chatStore } from "../../stores/chatStore"
 import { IUser, usersStore } from "../../stores/usersStore"
@@ -10,13 +8,17 @@ import "./UserList.scss"
 // ts!
 
 const UserList: FC = () => {
-  const { users } = usersStore
+  const { users, setCurrentUser } = usersStore
   const { createChat } = chatStore
   const { user: currentUser } = authStore
 
   const handleClick = (user: IUser) => () => {
     createChat(user, currentUser)
   }
+
+  useEffect(() => {
+    setCurrentUser(currentUser)
+  }, [currentUser, setCurrentUser])
 
   return (
     <>

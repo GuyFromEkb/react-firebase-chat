@@ -1,16 +1,19 @@
+import { User } from "firebase/auth"
 import { getDocs, collection } from "firebase/firestore"
-import { makeAutoObservable, runInAction } from "mobx"
+import { makeAutoObservable, runInAction, toJS } from "mobx"
 import { db } from "../firebase"
+import { authStore } from "./authStore"
 
 export interface IUser {
   displayName: string
   email: string
-  photoURL?: string
+  photoURL: string
   uid: string
 }
 
 class UsersStore {
-  users: IUser[] = []
+  currentUser: User | null = null
+  private _users: IUser[] = []
   isLoading = false
 
   constructor() {
@@ -19,13 +22,24 @@ class UsersStore {
   }
 
   private _fetchUsers = async () => {
+    console.log("feth")
     const querySnapshot = await getDocs(collection(db, "users"))
-    
+
     runInAction(() => {
       querySnapshot.forEach((doc) => {
-        this.users.push(doc.data() as IUser)
+        const user = doc.data() as IUser
+        this._users.push(user)
       })
     })
+  }
+
+  setCurrentUser = (user: User | null) => {
+    console.log("set")
+    this.currentUser = user
+  }
+
+  get users() {
+    return this._users.filter((user) => user.uid !== this.currentUser?.uid)
   }
 }
 
