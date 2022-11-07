@@ -1,22 +1,29 @@
-import { FC } from "react"
+import { FC, RefObject, useEffect } from "react"
 import cn from "classnames"
-import "./MessageItem.scss"
 import { getDateAndTime } from "../../utils/formatDate/getDateAndTime"
+import "./MessageItem.scss"
 
 interface IProps {
   isMyMessage: boolean
-  avatarUrl: string
+  avatarUrl?: string
   text: string
   date: {
     seconds: number
     nanoseconds: number
   }
+  refLastMessage?: RefObject<HTMLDivElement>
 }
 
-const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date }) => {
+const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date, refLastMessage }) => {
+  useEffect(() => {
+    if (refLastMessage) {
+      refLastMessage.current?.scrollIntoView({ behavior: "smooth" })
+    }
+  }, [refLastMessage])
+
   const messageTime = getDateAndTime(date.seconds)
   return (
-    <div className={cn("message-item", isMyMessage && "owner")}>
+    <div ref={refLastMessage} className={cn("message-item", isMyMessage && "owner")}>
       <div className="message-item__info">
         <img src={avatarUrl} alt="avatar" />
         <span>{messageTime}</span>
