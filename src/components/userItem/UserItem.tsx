@@ -1,5 +1,4 @@
 import { FC } from "react"
-import { IUser } from "../../stores/usersStore"
 import "./UserItem.scss"
 
 interface IUserItem {
@@ -7,6 +6,7 @@ interface IUserItem {
   photoUrl?: string
   onCreateChat: () => void
 }
+
 const UserItem: FC<IUserItem> = ({ displayName, photoUrl, onCreateChat }) => {
   return (
     <div onClick={onCreateChat} className="user-item">
