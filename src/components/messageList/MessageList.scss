@@ -1,7 +1,7 @@
 .message-list {
+  flex: 1;
   background-color: #ddddf7;
   padding: 10px;
-  height: calc(100% - 108px);
   overflow-y: auto;
   display: flex;
   flex-direction: column-reverse;

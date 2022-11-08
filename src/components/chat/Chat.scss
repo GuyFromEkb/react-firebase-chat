@@ -1,8 +1,5 @@
 .chat {
   flex: 2;
-}
-
-
-
-.message-item {
+  display: flex;
+  flex-direction: column;
 }
