@@ -2,17 +2,18 @@
  *Форматирует дату, которая пришла с фаербейса (Timestamp) в d/m hh:m
  *
  * @param {number} timeSpanSeconds Timestamp from FireBase
- * @return string d/m hh:m
+ * @return obj{ messageFullDate:Date + time,messageTime:time (no seconds)}
  */
 const getDateAndTime = (timestamp: number) => {
-  const messageDate = new Date(timestamp * 1000)
-  const month = messageDate.getMonth()
-  const dayNumb = messageDate.getDate()
-  const hour = messageDate.getHours()
-  const minutes = messageDate.getMinutes()
+  const buffDate = new Date(timestamp * 1000)
 
-  const messageTime = `${dayNumb}.${month} ${hour}:${minutes}`
-  return messageTime
+  const messageFullDate = buffDate.toLocaleString()
+  const messageTime = buffDate.toLocaleTimeString().slice(0, -3)
+
+  return {
+    messageFullDate,
+    messageTime,
+  }
 }
 
 export { getDateAndTime }
