@@ -1,0 +1,59 @@
+.accordion-wrapper {
+  background: inherit;
+  transition: border 0.35s ease;
+
+  &__header {
+    display: flex;
+    flex: 1;
+    cursor: pointer;
+    padding: 15px 10px 15px 10px;
+    align-items: center;
+    height: 55px;
+    justify-content: space-between;
+    &:hover {
+       transition: background-color 0.18s;
+      border-top: 1px solid #3e3c61;
+      padding-top: 14px;
+      background-color: #2f2d52;
+    }
+  }
+
+  &__title {
+    color: #ddddf7;
+  }
+
+  &__header-toggle-icon {
+    background: none;
+    border: none;
+    display: flex;
+
+    svg {
+      fill: #ddddf7;
+      transition: all 0.3s linear;
+    }
+
+    &--isOpen svg {
+      transform: rotate(-180deg);
+    }
+  }
+
+  &__content-enter {
+    overflow: hidden;
+    max-height: 0;
+  }
+
+  &__content-enter-active {
+    max-height: 1000px;
+    transition: max-height 0.6s ease-in-out;
+  }
+
+  &__content-exit {
+    max-height: 1000px;
+  }
+
+  &__content-exit-active {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+  }
+}
