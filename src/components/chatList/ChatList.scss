@@ -1,5 +1,30 @@
 .chat-list {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 50%;
+    display: none;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ddddf7;
+    border-radius: 20px;
+    border: 3px solid #3e3c61;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar {
+      display: block;
+    }
+  }
+}
+
+.subtitle {
+  color: #ddddf7;
+  padding: 10px;
+  font-weight: bold;
 }

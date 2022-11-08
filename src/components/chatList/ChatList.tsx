@@ -23,17 +23,20 @@ const ChatList: FC = () => {
   }, [subToFecthUserChats, user])
 
   return (
-    <div className="chat-list">
-      {chats.map(([chatId, chatRecipientData]) => (
-        <ChatItem
-          isMyLastMessage={user?.uid === chatRecipientData.lastMessage?.senderId}
-          lastMessage={chatRecipientData.lastMessage}
-          userInfo={chatRecipientData.userInfo}
-          toggleChat={() => toggleCurrentChat(chatId, chatRecipientData.userInfo)}
-          key={chatId}
-        />
-      ))}
-    </div>
+    <>
+      <div className="subtitle">Chat List:</div>
+      <div className="chat-list">
+        {chats.map(([chatId, chatRecipientData]) => (
+          <ChatItem
+            isMyLastMessage={user?.uid === chatRecipientData.lastMessage?.senderId}
+            lastMessage={chatRecipientData.lastMessage}
+            userInfo={chatRecipientData.userInfo}
+            toggleChat={() => toggleCurrentChat(chatId, chatRecipientData.userInfo)}
+            key={chatId}
+          />
+        ))}
+      </div>
+    </>
   )
 }
 
