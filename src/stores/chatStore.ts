@@ -1,18 +1,8 @@
 import { User } from "firebase/auth"
-import {
-  arrayUnion,
-  doc,
-  getDoc,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore"
+import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
 import { db } from "../firebase"
 import { IUser } from "./usersStore"
-import { v4 as uuid } from "uuid"
 
 export interface IUserChatInfo {
   uid: string
@@ -93,11 +83,9 @@ class ChatStore {
     const docRef = doc(db, "userChats", user.uid)
 
     return onSnapshot(docRef, (doc) => {
-      // if (!doc.metadata.hasPendingWrites) {
       const userChats = doc.data()
       if (userChats) {
         runInAction(() => (this._chats = Object.entries(userChats)))
-        // }
       }
     })
 
