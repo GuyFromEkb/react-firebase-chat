@@ -11,7 +11,7 @@
     height: 55px;
     justify-content: space-between;
     &:hover {
-       transition: background-color 0.18s;
+      transition: background-color 0.18s;
       border-top: 1px solid #3e3c61;
       padding-top: 14px;
       background-color: #2f2d52;
@@ -35,6 +35,10 @@
     &--isOpen svg {
       transform: rotate(-180deg);
     }
+  }
+
+  &__content-body {
+    padding-bottom: 20px;
   }
 
   &__content-enter {

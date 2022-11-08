@@ -20,9 +20,11 @@ const Accordion: FC<IAccordion> = ({ children, isAlreadyOpen = false, title, isO
   }
 
   return (
-    <section className="accordion-wrapper">
+    <div className="accordion-wrapper">
       <div onClick={onToggle} className="accordion-wrapper__header">
-        <h4 className="accordion-wrapper__title">{isOpenTitle && isOpen ? isOpenTitle : title}</h4>
+        <div className="accordion-wrapper__title">
+          {isOpenTitle && isOpen ? isOpenTitle : title}
+        </div>
         <span
           className={cn(
             "accordion-wrapper__header-toggle-icon",
@@ -39,12 +41,12 @@ const Accordion: FC<IAccordion> = ({ children, isAlreadyOpen = false, title, isO
           classNames="accordion-wrapper__content"
           unmountOnExit
         >
-          <section>
-            <section className="accordion-wrapper__content-body">{children}</section>
-          </section>
+          <div>
+            <div className="accordion-wrapper__content-body">{children}</div>
+          </div>
         </CSSTransition>
       </div>
-    </section>
+    </div>
   )
 }
 export default observer(Accordion)
