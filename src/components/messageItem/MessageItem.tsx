@@ -21,12 +21,12 @@ const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date, refLastMe
     }
   }, [refLastMessage])
 
-  const messageTime = getDateAndTime(date.seconds)
+  const { messageFullDate, messageTime } = getDateAndTime(date.seconds)
   return (
     <div ref={refLastMessage} className={cn("message-item", isMyMessage && "owner")}>
-      <div className="message-item__info">
+      <div title={messageFullDate} className="message-item__info">
         <img src={avatarUrl} alt="avatar" />
-        <span>{messageTime}</span>
+        <span className="message-item__time">{messageTime}</span>
       </div>
       <div className=" message-item__content ">
         <p>{text}</p>

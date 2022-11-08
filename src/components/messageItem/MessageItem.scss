@@ -18,7 +18,12 @@
       object-fit: cover;
     }
   }
-  
+  &__time {
+    font-size: 11px;
+    color: #8d8d8d;
+    cursor: default;
+  }
+
   &__content {
     max-width: 80%;
     display: flex;
