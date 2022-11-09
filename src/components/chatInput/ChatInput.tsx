@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite"
-import { FC, useEffect, useRef, useState } from "react"
+import { FC, useRef, useState } from "react"
 import ImgIcon from "../../assets/img/img.png"
 import { authStore } from "../../stores/authStore"
 import { messageStore } from "../../stores/messageStore"
-import { readAllFilesAsUrl } from "../../utils/fileReader/prevImgs"
+import { clearInputFileList } from "../../utils/chatInput/clearInputFileList"
+import { readAllFilesAsUrl } from "../../utils/chatInput/readAllFilesAsUrl"
 import ChatInputImgPrev from "../chatInputImgPrev/ChatInputImgPrev"
 import "./ChatInput.scss"
 
@@ -11,13 +12,14 @@ export interface IPervImg {
   name: string
   url: string
 }
+
 const ChatInput: FC = () => {
   const { postMessage } = messageStore
   const { user } = authStore
 
   const refInputFile = useRef<HTMLInputElement>(null)
   const [text, setText] = useState("")
-  const [imgs, setImgs] = useState<File[]>([])
+  const [fileImgs, setFileImgs] = useState<File[]>([])
   const [prevImg, setPrevImg] = useState<IPervImg[]>([])
 
   const onSend = () => {
@@ -29,29 +31,15 @@ const ChatInput: FC = () => {
     if (!e.target.files) return
 
     const imgUrlArr = await readAllFilesAsUrl(e.target.files)
-    setImgs([...e.target.files])
+    setFileImgs([...e.target.files])
     setPrevImg(imgUrlArr)
   }
 
   const handleRemoveImg = (fileName: string) => () => {
     setPrevImg((prevState) => prevState.filter((img) => img.name !== fileName))
-    setImgs((prevState) => prevState.filter((file) => file.name !== fileName))
+    setFileImgs((prevState) => prevState.filter((file) => file.name !== fileName))
 
-    if (refInputFile.current?.files) {
-      const dt = new DataTransfer()
-
-      for (const key in refInputFile.current.files) {
-        const element = refInputFile.current.files[key]
-        if (
-          Object.prototype.hasOwnProperty.call(refInputFile.current.files, key) &&
-          element.name !== fileName
-        ) {
-          dt.items.add(element)
-        }
-      }
-
-      refInputFile.current.files = dt.files
-    }
+    clearInputFileList(refInputFile.current, fileName)
   }
 
   return (
