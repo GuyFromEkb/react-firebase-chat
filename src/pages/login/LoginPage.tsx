@@ -2,8 +2,7 @@ import { observer } from "mobx-react-lite"
 import { FC, FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import FormOverlay from "../../components/formOverlay/FormOverlay"
-import { auth } from "../../firebase"
-import { rootStore } from "../../stores/rootStore"
+import { useStore } from "../../hooks/useStore"
 import "./LoginPage.scss"
 
 export interface IFormDataLogin {
@@ -12,6 +11,7 @@ export interface IFormDataLogin {
 }
 
 const LoginPage: FC = () => {
+  const { authStore } = useStore()
   const navigate = useNavigate()
   const [formState, setFormState] = useState<IFormDataLogin>({
     email: "",
@@ -30,12 +30,12 @@ const LoginPage: FC = () => {
       password: formState.password,
     }
 
-    await rootStore.authStore.login(loginData)
+    await authStore.login(loginData)
     navigate("/")
   }
 
   const onLoginWithGoogleAcc = async () => {
-    await rootStore.authStore.loginWithGoogleAcc()
+    await authStore.loginWithGoogleAcc()
     navigate("/")
   }
 
@@ -67,7 +67,7 @@ const LoginPage: FC = () => {
               Sign in with <span onClick={onLoginWithGoogleAcc}>google account</span>
             </div>
           </div>
-          {rootStore.authStore.isLoading && <FormOverlay />}
+          {authStore.isLoading && <FormOverlay />}
         </form>
       </div>
     </div>

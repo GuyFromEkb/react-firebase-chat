@@ -3,7 +3,7 @@ import { FC, FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import loadAvatar from "../../assets/img/addAvatar.png"
 import FormOverlay from "../../components/formOverlay/FormOverlay"
-import { rootStore } from "../../stores/rootStore"
+import { useStore } from "../../hooks/useStore"
 
 import "./RegisterPage.scss"
 
@@ -14,6 +14,7 @@ export interface IFormData {
   avatar: File | undefined
 }
 const RegisterPage: FC = () => {
+  const { authStore } = useStore()
   const navigate = useNavigate()
   const [formState, setFormState] = useState<IFormData>({
     displayName: "",
@@ -58,7 +59,7 @@ const RegisterPage: FC = () => {
       avatar: formState.avatar,
     }
 
-    await rootStore.authStore.registerUser(registerData)
+    await authStore.registerUser(registerData)
     navigate("/")
   }
 
@@ -105,7 +106,7 @@ const RegisterPage: FC = () => {
             You do have an account? <Link to="/login">Login</Link>
           </div>
 
-          {rootStore.authStore.isLoading && <FormOverlay />}
+          {authStore.isLoading && <FormOverlay />}
         </form>
       </div>
     </div>

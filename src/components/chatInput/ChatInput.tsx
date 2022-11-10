@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite"
 import { FC, useRef, useState } from "react"
 import ImgIcon from "../../assets/img/img.png"
+import { useStore } from "../../hooks/useStore"
 import { messageStore } from "../../stores/messageStore"
-import { rootStore } from "../../stores/rootStore"
 import { clearInputFileList } from "../../utils/chatInput/clearInputFileList"
 import { readAllFilesAsUrl } from "../../utils/chatInput/readAllFilesAsUrl"
 import ChatInputImgPrev from "../chatInputImgPrev/ChatInputImgPrev"
@@ -15,7 +15,7 @@ export interface IPervImg {
 
 const ChatInput: FC = () => {
   const { postMessage } = messageStore
-  const { user } = rootStore.authStore
+  const { authStore } = useStore()
 
   const refInputFile = useRef<HTMLInputElement>(null)
   const [text, setText] = useState("")
@@ -24,7 +24,7 @@ const ChatInput: FC = () => {
 
   const onSend = () => {
     console.log("send")
-    postMessage(text, user!)
+    postMessage(text, authStore.user!)
   }
 
   const handleAddImgs = async (e: React.ChangeEvent<HTMLInputElement>) => {

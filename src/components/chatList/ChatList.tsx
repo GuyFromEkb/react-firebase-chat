@@ -1,14 +1,15 @@
 import { toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { FC, useEffect } from "react"
+import { useStore } from "../../hooks/useStore"
 import { chatStore } from "../../stores/chatStore"
-import { rootStore } from "../../stores/rootStore"
 import ChatItem from "../chatItem/ChatItem"
 import "./ChatList.scss"
 
 const ChatList: FC = () => {
   const { subToFecthUserChats, chats, toggleCurrentChat } = chatStore
-  const { user } = rootStore.authStore
+  const { authStore } = useStore()
+  const { user } = authStore
 
   useEffect(() => {
     const getChats = async () => {
@@ -21,7 +22,6 @@ const ChatList: FC = () => {
 
     user?.uid && getChats()
   }, [subToFecthUserChats, user])
-
   return (
     <>
       <div className="subtitle">Chat List:</div>

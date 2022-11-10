@@ -1,4 +1,3 @@
-import { User } from "firebase/auth"
 import { getDocs, collection } from "firebase/firestore"
 import { makeAutoObservable, runInAction } from "mobx"
 import { db } from "../firebase"
@@ -13,11 +12,11 @@ export interface IUser {
 
 export class UsersStore {
   private _users: IUser[] = []
-  private rootStore: RootStore
+  private _rootStore: RootStore
   isLoading = false
 
   constructor(rootStore: RootStore) {
-    this.rootStore = rootStore
+    this._rootStore = rootStore
     this._fetchUsers()
 
     makeAutoObservable(this)
@@ -36,6 +35,6 @@ export class UsersStore {
   }
 
   get users() {
-    return this._users.filter((user) => user.uid !== this.rootStore.authStore.user?.uid)
+    return this._users.filter((user) => user.uid !== this._rootStore.authStore.user?.uid)
   }
 }

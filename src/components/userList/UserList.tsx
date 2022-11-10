@@ -5,11 +5,12 @@ import { IUser } from "../../stores/usersStore"
 import Accordion from "../accordion/Accordion"
 import UserItem from "../userItem/UserItem"
 import "./UserList.scss"
-import { rootStore } from "../../stores/rootStore"
+import { useStore } from "../../hooks/useStore"
 
 const UserList: FC = () => {
-  const { user: currentUser } = rootStore.authStore
-  const { users } = rootStore.usersStore
+  const { authStore, usersStore } = useStore()
+  const { user: currentUser } = authStore
+  const { users } = usersStore
   const { createChat } = chatStore
 
   const handleClick = (user: IUser) => () => {
