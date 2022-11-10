@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { FC } from "react"
-import { ICurrentUserChats, IUserChatInfo } from "../../stores/chatStore"
+import { ICurrentUserChats } from "../../stores/chatStore"
 import "./ChatItem.scss"
 
 interface IProps extends Omit<ICurrentUserChats, "date"> {

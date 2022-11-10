@@ -29,9 +29,9 @@ export interface ICurrentChatInfo {
 }
 
 export class ChatStore {
-  isLoading = false
   private _chats: [string, ICurrentUserChats][] = []
   private _rootStore: RootStore
+  isLoading = false
   currentChatInfo: ICurrentChatInfo | null = null
 
   constructor(rootStore: RootStore) {
