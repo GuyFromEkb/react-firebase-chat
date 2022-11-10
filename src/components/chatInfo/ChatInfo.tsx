@@ -1,13 +1,13 @@
 import { observer } from "mobx-react-lite"
 import { FC } from "react"
-import { chatStore } from "../../stores/chatStore"
+import { useStore } from "../../hooks/useStore"
 import "./ChatInfo.scss"
 
 const ChatInfo: FC = () => {
-  const { currentChatInfo } = chatStore
+  const { chatStore } = useStore()
   return (
     <div className="chat-info">
-      <span>{currentChatInfo?.recipientUserInfo.displayName || ""}</span>
+      <span>{chatStore?.currentChatInfo?.recipientUserInfo.displayName || ""}</span>
     </div>
   )
 }

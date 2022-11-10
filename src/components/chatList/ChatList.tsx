@@ -1,34 +1,31 @@
-import { toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { FC, useEffect } from "react"
 import { useStore } from "../../hooks/useStore"
-import { chatStore } from "../../stores/chatStore"
 import ChatItem from "../chatItem/ChatItem"
 import "./ChatList.scss"
 
 const ChatList: FC = () => {
+  const { chatStore, currentUser } = useStore()
   const { subToFecthUserChats, chats, toggleCurrentChat } = chatStore
-  const { authStore } = useStore()
-  const { user } = authStore
 
   useEffect(() => {
     const getChats = async () => {
-      const unsub = await subToFecthUserChats(user!)
+      const unsub = await subToFecthUserChats()
 
       return () => {
         unsub()
       }
     }
 
-    user?.uid && getChats()
-  }, [subToFecthUserChats, user])
+    getChats()
+  }, [subToFecthUserChats])
   return (
     <>
       <div className="subtitle">Chat List:</div>
       <div className="chat-list">
         {chats.map(([chatId, chatRecipientData]) => (
           <ChatItem
-            isMyLastMessage={user?.uid === chatRecipientData.lastMessage?.senderId}
+            isMyLastMessage={currentUser?.uid === chatRecipientData.lastMessage?.senderId}
             lastMessage={chatRecipientData.lastMessage}
             userInfo={chatRecipientData.userInfo}
             toggleChat={() => toggleCurrentChat(chatId, chatRecipientData.userInfo)}

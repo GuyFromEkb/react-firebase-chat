@@ -1,7 +1,8 @@
 import { User } from "firebase/auth"
 import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
-import { makeAutoObservable, runInAction, toJS } from "mobx"
+import { makeAutoObservable, runInAction } from "mobx"
 import { db } from "../firebase"
+import { RootStore } from "./rootStore"
 import { IUser } from "./usersStore"
 
 export interface IUserChatInfo {
@@ -28,12 +29,14 @@ export interface ICurrentChatInfo {
   recipientUserInfo: IUserChatInfo
 }
 
-class ChatStore {
+export class ChatStore {
   isLoading = false
   private _chats: [string, ICurrentUserChats][] = []
+  private _rootStore: RootStore
   currentChatInfo: ICurrentChatInfo | null = null
 
-  constructor() {
+  constructor(rootStore: RootStore) {
+    this._rootStore = rootStore
     makeAutoObservable(this)
   }
 
@@ -44,9 +47,11 @@ class ChatStore {
     }
   }
 
-  createChat = async (user: IUser, currentUser: User | null) => {
+  createChat = async (user: IUser) => {
     const combinedId =
-      currentUser?.uid! > user.uid ? currentUser?.uid + user.uid : user.uid + currentUser?.uid
+      this._rootStore.currentUser?.uid! > user.uid
+        ? this._rootStore.currentUser?.uid + user.uid
+        : user.uid + this._rootStore.currentUser?.uid
 
     const docRef = doc(db, "chats", combinedId)
     const docSnap = await getDoc(docRef)
@@ -56,7 +61,7 @@ class ChatStore {
         setDoc(doc(db, "chats", combinedId), {
           messages: [],
         }),
-        updateDoc(doc(db, "userChats", currentUser?.uid!), {
+        updateDoc(doc(db, "userChats", this._rootStore.currentUser?.uid!), {
           [combinedId + ".userInfo"]: {
             uid: user.uid,
             displayName: user.displayName,
@@ -67,9 +72,9 @@ class ChatStore {
         }),
         updateDoc(doc(db, "userChats", user.uid), {
           [combinedId + ".userInfo"]: {
-            uid: currentUser?.uid,
-            displayName: currentUser?.displayName,
-            photoURL: currentUser?.photoURL,
+            uid: this._rootStore.currentUser?.uid,
+            displayName: this._rootStore.currentUser?.displayName,
+            photoURL: this._rootStore.currentUser?.photoURL,
           },
           [combinedId + ".date"]: Timestamp.now(),
         }),
@@ -79,8 +84,8 @@ class ChatStore {
     this.toggleCurrentChat(combinedId, user)
   }
 
-  subToFecthUserChats = async (user: User) => {
-    const docRef = doc(db, "userChats", user.uid)
+  subToFecthUserChats = async () => {
+    const docRef = doc(db, "userChats", this._rootStore.currentUser?.uid!)
 
     return onSnapshot(docRef, (doc) => {
       const userChats = doc.data()
@@ -103,6 +108,3 @@ class ChatStore {
       .sort((a, b) => b[1].date?.seconds - a[1].date?.seconds)
   }
 }
-
-const chatStore = new ChatStore()
-export { chatStore }
