@@ -1,8 +1,8 @@
 import { User } from "firebase/auth"
 import { getDocs, collection } from "firebase/firestore"
-import { makeAutoObservable, runInAction, toJS } from "mobx"
+import { makeAutoObservable, runInAction } from "mobx"
 import { db } from "../firebase"
-import { authStore } from "./authStore"
+import { RootStore } from "./rootStore"
 
 export interface IUser {
   displayName: string
@@ -11,14 +11,16 @@ export interface IUser {
   uid: string
 }
 
-class UsersStore {
-  currentUser: User | null = null
+export class UsersStore {
   private _users: IUser[] = []
+  private rootStore: RootStore
   isLoading = false
 
-  constructor() {
-    makeAutoObservable(this)
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore
     this._fetchUsers()
+
+    makeAutoObservable(this)
   }
 
   private _fetchUsers = async () => {
@@ -33,15 +35,7 @@ class UsersStore {
     })
   }
 
-  setCurrentUser = (user: User | null) => {
-    console.log("set")
-    this.currentUser = user
-  }
-
   get users() {
-    return this._users.filter((user) => user.uid !== this.currentUser?.uid)
+    return this._users.filter((user) => user.uid !== this.rootStore.authStore.user?.uid)
   }
 }
-
-const usersStore = new UsersStore()
-export { usersStore }

@@ -1,24 +1,21 @@
 import { observer } from "mobx-react-lite"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { authStore } from "../../stores/authStore"
 import { chatStore } from "../../stores/chatStore"
-import { IUser, usersStore } from "../../stores/usersStore"
+import { IUser } from "../../stores/usersStore"
 import Accordion from "../accordion/Accordion"
 import UserItem from "../userItem/UserItem"
 import "./UserList.scss"
+import { rootStore } from "../../stores/rootStore"
 
 const UserList: FC = () => {
   const { user: currentUser } = authStore
-  const { users, setCurrentUser } = usersStore
+  const { users } = rootStore.usersStore
   const { createChat } = chatStore
 
   const handleClick = (user: IUser) => () => {
     createChat(user, currentUser)
   }
-
-  useEffect(() => {
-    setCurrentUser(currentUser)
-  }, [currentUser, setCurrentUser])
 
   return (
     <>
