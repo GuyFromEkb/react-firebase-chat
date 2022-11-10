@@ -15,7 +15,7 @@ import { IFormDataLogin } from "../pages/login/LoginPage"
 import { IFormData } from "../pages/register/RegisterPage"
 import { authObserver } from "../utils/firebase/authObserver"
 
-class AuthStore {
+export class AuthStore {
   user: User | null = null
   isLoading = false
 
@@ -118,7 +118,3 @@ class AuthStore {
     })
   }
 }
-
-const authStore = new AuthStore()
-
-export { authStore }

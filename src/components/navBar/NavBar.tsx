@@ -1,8 +1,9 @@
 import { FC } from "react"
-import { authStore } from "../../stores/authStore"
+import { useStore } from "../../hooks/useStore"
 import "./NavBar.scss"
 
 const NavBar: FC = () => {
+  const { authStore } = useStore()
   const { logOut, user } = authStore
   return (
     <div className="navbar">

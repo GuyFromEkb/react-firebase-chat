@@ -1,10 +1,8 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { observer } from "mobx-react-lite"
 import { FC, FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import FormOverlay from "../../components/formOverlay/FormOverlay"
-import { auth } from "../../firebase"
-import { authStore } from "../../stores/authStore"
+import { useStore } from "../../hooks/useStore"
 import "./LoginPage.scss"
 
 export interface IFormDataLogin {
@@ -13,6 +11,7 @@ export interface IFormDataLogin {
 }
 
 const LoginPage: FC = () => {
+  const { authStore } = useStore()
   const navigate = useNavigate()
   const [formState, setFormState] = useState<IFormDataLogin>({
     email: "",

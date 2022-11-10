@@ -3,7 +3,8 @@ import { FC, FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import loadAvatar from "../../assets/img/addAvatar.png"
 import FormOverlay from "../../components/formOverlay/FormOverlay"
-import { authStore } from "../../stores/authStore"
+import { useStore } from "../../hooks/useStore"
+
 import "./RegisterPage.scss"
 
 export interface IFormData {
@@ -13,6 +14,7 @@ export interface IFormData {
   avatar: File | undefined
 }
 const RegisterPage: FC = () => {
+  const { authStore } = useStore()
   const navigate = useNavigate()
   const [formState, setFormState] = useState<IFormData>({
     displayName: "",
