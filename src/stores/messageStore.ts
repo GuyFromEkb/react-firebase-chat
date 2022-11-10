@@ -1,16 +1,16 @@
-import { User } from "firebase/auth"
+import { RootStore } from "./rootStore"
 import { arrayUnion, doc, onSnapshot, Timestamp, updateDoc } from "firebase/firestore"
 import { makeAutoObservable, runInAction } from "mobx"
 import { IMessage } from "../components/messageList/MessageList"
 import { db } from "../firebase"
 import { v4 as uuid } from "uuid"
-import { ICurrentChatInfo } from "./chatStore"
 
-class MessageStore {
+export class MessageStore {
   private _messages: IMessage[] = []
-  private _currentChatInfo: ICurrentChatInfo | null = null
+  private _rootStore: RootStore
 
-  constructor() {
+  constructor(rootStore: RootStore) {
+    this._rootStore = rootStore
     makeAutoObservable(this)
   }
 
@@ -18,10 +18,10 @@ class MessageStore {
     this._messages = []
   }
 
-  subToFecthMessages = (currentChatInfo: ICurrentChatInfo) => {
-    this._currentChatInfo = currentChatInfo
+  subToFecthMessages = () => {
+    const currentChatId = this._rootStore.chatStore.currentChatInfo?.id!
 
-    const docRef = doc(db, "chats", this._currentChatInfo.id)
+    const docRef = doc(db, "chats", currentChatId)
 
     return onSnapshot(docRef, (doc) => {
       const messages = doc.data()
@@ -29,40 +29,38 @@ class MessageStore {
     })
   }
 
-  postMessage = async (text: string, currentUser: User) => {
-    if (!this._currentChatInfo) return
+  postMessage = async (text: string) => {
+    const currentUserId = this._rootStore.currentUser?.uid!
+    const currentChat = this._rootStore.chatStore.currentChatInfo
+    if (!currentChat) return
 
-    const docRefChat = doc(db, "chats", this._currentChatInfo.id)
+    const docRefChat = doc(db, "chats", currentChat.id)
 
     await updateDoc(docRefChat, {
       messages: arrayUnion({
         id: uuid(),
         text,
-        senderId: currentUser.uid,
+        senderId: currentUserId,
         date: Timestamp.now(),
       }),
     })
 
-    const docRefCurrentUserInChatList = doc(db, "userChats", currentUser.uid)
+    const docRefCurrentUserInChatList = doc(db, "userChats", currentUserId)
 
     await updateDoc(docRefCurrentUserInChatList, {
-      [this._currentChatInfo.id + ".date"]: Timestamp.now(),
-      [this._currentChatInfo.id + ".lastMessage"]: {
-        senderId: currentUser.uid,
+      [currentChat.id + ".date"]: Timestamp.now(),
+      [currentChat.id + ".lastMessage"]: {
+        senderId: currentUserId,
         text,
       },
     })
 
-    const docRefRecipientUserInChatList = doc(
-      db,
-      "userChats",
-      this._currentChatInfo.recipientUserInfo.uid
-    )
+    const docRefRecipientUserInChatList = doc(db, "userChats", currentChat.recipientUserInfo.uid)
 
     await updateDoc(docRefRecipientUserInChatList, {
-      [this._currentChatInfo.id + ".date"]: Timestamp.now(),
-      [this._currentChatInfo.id + ".lastMessage"]: {
-        senderId: currentUser.uid,
+      [currentChat.id + ".date"]: Timestamp.now(),
+      [currentChat.id + ".lastMessage"]: {
+        senderId: currentUserId,
         text,
       },
     })
@@ -72,7 +70,3 @@ class MessageStore {
     return this._messages.slice().reverse()
   }
 }
-
-const messageStore = new MessageStore()
-
-export { messageStore }

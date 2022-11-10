@@ -1,4 +1,3 @@
-import { User } from "firebase/auth"
 import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
 import { makeAutoObservable, runInAction } from "mobx"
 import { db } from "../firebase"
