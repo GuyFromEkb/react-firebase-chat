@@ -1,10 +1,9 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { observer } from "mobx-react-lite"
 import { FC, FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import FormOverlay from "../../components/formOverlay/FormOverlay"
 import { auth } from "../../firebase"
-import { authStore } from "../../stores/authStore"
+import { rootStore } from "../../stores/rootStore"
 import "./LoginPage.scss"
 
 export interface IFormDataLogin {
@@ -31,12 +30,12 @@ const LoginPage: FC = () => {
       password: formState.password,
     }
 
-    await authStore.login(loginData)
+    await rootStore.authStore.login(loginData)
     navigate("/")
   }
 
   const onLoginWithGoogleAcc = async () => {
-    await authStore.loginWithGoogleAcc()
+    await rootStore.authStore.loginWithGoogleAcc()
     navigate("/")
   }
 
@@ -68,7 +67,7 @@ const LoginPage: FC = () => {
               Sign in with <span onClick={onLoginWithGoogleAcc}>google account</span>
             </div>
           </div>
-          {authStore.isLoading && <FormOverlay />}
+          {rootStore.authStore.isLoading && <FormOverlay />}
         </form>
       </div>
     </div>

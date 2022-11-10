@@ -2,9 +2,9 @@ import { doc, onSnapshot } from "firebase/firestore"
 import { observer } from "mobx-react-lite"
 import { FC, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { db } from "../../firebase"
-import { authStore } from "../../stores/authStore"
 import { chatStore } from "../../stores/chatStore"
 import { messageStore } from "../../stores/messageStore"
+import { rootStore } from "../../stores/rootStore"
 import MessageItem from "../messageItem/MessageItem"
 import "./MessageList.scss"
 
@@ -24,7 +24,7 @@ export interface IMessage {
 }
 
 const MessageList: FC = () => {
-  const { user } = authStore
+  const { user } = rootStore.authStore
   const { currentChatInfo } = chatStore
   const { subToFecthMessages, messages, reset } = messageStore
   const refLastMessage = useRef<HTMLDivElement>(null)

@@ -1,9 +1,9 @@
 import { FC } from "react"
-import { authStore } from "../../stores/authStore"
+import { rootStore } from "../../stores/rootStore"
 import "./NavBar.scss"
 
 const NavBar: FC = () => {
-  const { logOut, user } = authStore
+  const { logOut, user } = rootStore.authStore
   return (
     <div className="navbar">
       <div className="navbar__profile-wrap">

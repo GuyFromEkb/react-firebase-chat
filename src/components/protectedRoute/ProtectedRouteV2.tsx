@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite"
 import { FC } from "react"
 import { Navigate } from "react-router-dom"
-import { authStore } from "../../stores/authStore"
+import { rootStore } from "../../stores/rootStore"
+
 import Loader from "../loader/Loader"
 
 interface IProtectedRoute {
@@ -9,7 +10,7 @@ interface IProtectedRoute {
 }
 
 export const ProtectedRouteV2: FC<IProtectedRoute> = ({ outlet }) => {
-  const { user, isLoading } = authStore
+  const { user, isLoading } = rootStore.authStore
 
   if (isLoading) {
     return <Loader />

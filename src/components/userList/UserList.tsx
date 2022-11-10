@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite"
 import { FC } from "react"
-import { authStore } from "../../stores/authStore"
 import { chatStore } from "../../stores/chatStore"
 import { IUser } from "../../stores/usersStore"
 import Accordion from "../accordion/Accordion"
@@ -9,7 +8,7 @@ import "./UserList.scss"
 import { rootStore } from "../../stores/rootStore"
 
 const UserList: FC = () => {
-  const { user: currentUser } = authStore
+  const { user: currentUser } = rootStore.authStore
   const { users } = rootStore.usersStore
   const { createChat } = chatStore
 
