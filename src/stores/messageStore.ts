@@ -4,10 +4,15 @@ import { makeAutoObservable, runInAction } from "mobx"
 import { IMessage } from "../components/messageList/MessageList"
 import { db } from "../firebase"
 import { v4 as uuid } from "uuid"
+import { getStoregeImgItemUrls } from "../utils/firebase/storage"
 
 export class MessageStore {
   private _messages: IMessage[] = []
   private _rootStore: RootStore
+  isLoading = {
+    files: false,
+    message: false,
+  }
 
   constructor(rootStore: RootStore) {
     this._rootStore = rootStore
@@ -29,41 +34,58 @@ export class MessageStore {
     })
   }
 
-  postMessage = async (text: string) => {
+  postMessage = async (text: string, files?: File[]) => {
     const currentUserId = this._rootStore.currentUser?.uid!
     const currentChat = this._rootStore.chatStore.currentChatInfo
     if (!currentChat) return
 
     const docRefChat = doc(db, "chats", currentChat.id)
 
-    await updateDoc(docRefChat, {
-      messages: arrayUnion({
-        id: uuid(),
-        text,
-        senderId: currentUserId,
-        date: Timestamp.now(),
-      }),
-    })
+    this.isLoading.files = true
+    try {
+      const filesUrls = files ? await getStoregeImgItemUrls(currentChat.id, files) : []
+      runInAction(() => (this.isLoading.files = false))
+
+      updateDoc(docRefChat, {
+        messages: arrayUnion({
+          id: uuid(),
+          date: Timestamp.now(),
+          senderId: currentUserId,
+          text,
+          files: {
+            img: filesUrls,
+          },
+        }),
+      })
+    } finally {
+      this.isLoading.files = false
+    }
+  }
+
+  updateLastMessageInChats = async (text: string, files?: File[]) => {
+    const currentUserId = this._rootStore.currentUser?.uid!
+    const currentChat = this._rootStore.chatStore.currentChatInfo
+    if (!currentChat) return
 
     const docRefCurrentUserInChatList = doc(db, "userChats", currentUserId)
-
-    await updateDoc(docRefCurrentUserInChatList, {
-      [currentChat.id + ".date"]: Timestamp.now(),
-      [currentChat.id + ".lastMessage"]: {
-        senderId: currentUserId,
-        text,
-      },
-    })
-
     const docRefRecipientUserInChatList = doc(db, "userChats", currentChat.recipientUserInfo.uid)
 
-    await updateDoc(docRefRecipientUserInChatList, {
-      [currentChat.id + ".date"]: Timestamp.now(),
-      [currentChat.id + ".lastMessage"]: {
-        senderId: currentUserId,
-        text,
-      },
-    })
+    await Promise.all([
+      updateDoc(docRefCurrentUserInChatList, {
+        [currentChat.id + ".date"]: Timestamp.now(),
+        [currentChat.id + ".lastMessage"]: {
+          senderId: currentUserId,
+          text: text || "attached files",
+        },
+      }),
+      updateDoc(docRefRecipientUserInChatList, {
+        [currentChat.id + ".date"]: Timestamp.now(),
+        [currentChat.id + ".lastMessage"]: {
+          senderId: currentUserId,
+          text: text || "attached files",
+        },
+      }),
+    ])
   }
 
   get messages() {
