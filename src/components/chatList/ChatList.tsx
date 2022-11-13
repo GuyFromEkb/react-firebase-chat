@@ -6,7 +6,7 @@ import "./ChatList.scss"
 
 const ChatList: FC = () => {
   const { chatStore, currentUser } = useStore()
-  const { subToFecthUserChats, chats, toggleCurrentChat } = chatStore
+  const { subToFecthUserChats, chats, toggleCurrentChat, currentChatInfo } = chatStore
 
   useEffect(() => {
     const getChats = async () => {
@@ -25,6 +25,7 @@ const ChatList: FC = () => {
       <div className="chat-list">
         {chats.map(([chatId, chatRecipientData]) => (
           <ChatItem
+            isCurrentChat={currentChatInfo?.id === chatId}
             isMyLastMessage={currentUser?.uid === chatRecipientData.lastMessage?.senderId}
             lastMessage={chatRecipientData.lastMessage}
             userInfo={chatRecipientData.userInfo}

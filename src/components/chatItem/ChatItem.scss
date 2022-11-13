@@ -39,4 +39,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  &.current-chat {
+    background-color: #201e47;
+  }
 }
