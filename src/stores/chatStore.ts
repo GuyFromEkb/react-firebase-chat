@@ -52,35 +52,44 @@ export class ChatStore {
         ? this._rootStore.currentUser?.uid + user.uid
         : user.uid + this._rootStore.currentUser?.uid
 
-    const docRef = doc(db, "chats", combinedId)
-    const docSnap = await getDoc(docRef)
+    try {
+      console.log("zawel v try")
+      const docRef = doc(db, "chats", combinedId)
+      const docSnap = await getDoc(docRef)
 
-    if (!docSnap.exists()) {
-      await Promise.all([
-        setDoc(doc(db, "chats", combinedId), {
-          messages: [],
-        }),
-        updateDoc(doc(db, "userChats", this._rootStore.currentUser?.uid!), {
-          [combinedId + ".userInfo"]: {
-            uid: user.uid,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-          },
-          [combinedId + ".date"]: Timestamp.now(),
-          // [combinedId + ".date"]: serverTimestamp(),
-        }),
-        updateDoc(doc(db, "userChats", user.uid), {
-          [combinedId + ".userInfo"]: {
-            uid: this._rootStore.currentUser?.uid,
-            displayName: this._rootStore.currentUser?.displayName,
-            photoURL: this._rootStore.currentUser?.photoURL,
-          },
-          [combinedId + ".date"]: Timestamp.now(),
-        }),
-      ])
+      this.isLoading = true
+
+      if (!docSnap.exists()) {
+        await Promise.all([
+          setDoc(doc(db, "chats", combinedId), {
+            messages: [],
+          }),
+          updateDoc(doc(db, "userChats", this._rootStore.currentUser?.uid!), {
+            [combinedId + ".userInfo"]: {
+              uid: user.uid,
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+            },
+            [combinedId + ".date"]: Timestamp.now(),
+            // [combinedId + ".date"]: serverTimestamp(),
+          }),
+          updateDoc(doc(db, "userChats", user.uid), {
+            [combinedId + ".userInfo"]: {
+              uid: this._rootStore.currentUser?.uid,
+              displayName: this._rootStore.currentUser?.displayName,
+              photoURL: this._rootStore.currentUser?.photoURL,
+            },
+            [combinedId + ".date"]: Timestamp.now(),
+          }),
+        ])
+      }
+    } finally {
+      console.log("zawel v final")
+      runInAction(() => {
+        this.isLoading = false
+        this.toggleCurrentChat(combinedId, user)
+      })
     }
-
-    this.toggleCurrentChat(combinedId, user)
   }
 
   subToFecthUserChats = async () => {
