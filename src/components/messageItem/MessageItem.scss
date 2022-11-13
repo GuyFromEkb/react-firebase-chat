@@ -25,14 +25,17 @@
   }
 
   &__content {
+    padding: 10px;
+    background-color: white;
+    overflow: hidden;
     max-width: 80%;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     gap: 10px;
+    border-radius: 0px 10px 10px 10px;
 
     p {
-      background-color: white;
-      padding: 10px 20px;
       border-radius: 0px 10px 10px 10px;
       max-width: max-content;
     }
@@ -42,15 +45,29 @@
     }
   }
 
+  &__img {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 5px;
+    img {
+      border-radius: 5px;
+      object-fit: cover;
+      max-width: 120px;
+      min-width: 60px;
+      width: auto;
+      height: 70px;
+      transition: 0.3s ease-in-out;
+    }
+  }
+
   &.owner {
     flex-direction: row-reverse;
 
     .message-item__content {
-      align-items: flex-end;
+      background-color: #8da4f1;
       p {
-        background-color: #8da4f1;
         color: white;
-        border-radius: 10px 0px 10px 10px;
       }
     }
   }
