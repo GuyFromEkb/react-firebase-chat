@@ -13,6 +13,9 @@ export interface IMessage {
   senderId: string
   text: string
   id: string
+  files: {
+    img: string[]
+  }
   date: {
     seconds: number
     nanoseconds: number
@@ -40,6 +43,7 @@ const MessageList: FC = () => {
     <div className="message-list">
       {messages.map((message, idx) => (
         <MessageItem
+          files={message.files}
           key={message.id}
           date={message.date}
           text={message.text}

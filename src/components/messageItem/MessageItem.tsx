@@ -7,6 +7,9 @@ interface IProps {
   isMyMessage: boolean
   avatarUrl?: string
   text: string
+  files: {
+    img: string[]
+  }
   date: {
     seconds: number
     nanoseconds: number
@@ -14,7 +17,7 @@ interface IProps {
   refLastMessage?: RefObject<HTMLDivElement>
 }
 
-const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date, refLastMessage }) => {
+const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date, refLastMessage, files }) => {
   useEffect(() => {
     if (refLastMessage) {
       refLastMessage.current?.scrollIntoView({ behavior: "smooth" })
@@ -28,9 +31,15 @@ const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date, refLastMe
         <img src={avatarUrl} alt="avatar" />
         <span className="message-item__time">{messageTime}</span>
       </div>
-      <div className=" message-item__content ">
-        <p>{text}</p>
-        {/* {message.img && <img src={message.img} alt="" />} */}
+      <div className="message-item__content ">
+        {!!text && <p>{text}</p>}
+        {!!files?.img.length && (
+          <div className="message-item__img">
+            {files.img.map((imgUrl, idx) => (
+              <img key={idx} src={imgUrl} alt="attachment img" />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
