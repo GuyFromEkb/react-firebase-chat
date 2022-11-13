@@ -14,16 +14,26 @@ export interface IPervImg {
 
 const ChatInput: FC = () => {
   const { messageStore } = useStore()
-  const { postMessage } = messageStore
+  const { postMessage, updateLastMessageInChats, isLoading } = messageStore
 
   const refInputFile = useRef<HTMLInputElement>(null)
   const [text, setText] = useState("")
-  const [, /* fileImgs */ setFileImgs] = useState<File[]>([])
+  const [fileImgs, setFileImgs] = useState<File[]>([])
   const [prevImg, setPrevImg] = useState<IPervImg[]>([])
 
-  const onSend = () => {
-    console.log("send")
-    postMessage(text)
+  const onSend = async () => {
+    if (!(text || fileImgs.length)) {
+      return
+    }
+
+    await postMessage(text, fileImgs)
+
+    setText("")
+    setFileImgs([])
+    setPrevImg([])
+    if (refInputFile.current) refInputFile.current.value = ""
+
+    !!fileImgs.length ? await updateLastMessageInChats(text) : updateLastMessageInChats(text)
   }
 
   const handleAddImgs = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +77,7 @@ const ChatInput: FC = () => {
             />
             <img src={ImgIcon} alt="Img Icon" />
           </label>
-          <button onClick={onSend}>Send</button>
+          <button onClick={onSend}>{isLoading.files ? "Loading" : "Send"}</button>
         </div>
       </div>
     </div>
