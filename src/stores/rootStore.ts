@@ -22,4 +22,9 @@ export class RootStore {
   get currentUser() {
     return this.authStore.user
   }
+
+  get firstRenderLoading() {
+    // this.chatStore.isLoading
+    return this.authStore.isLoading || this.usersStore.isLoading /*||  this.chatStore.isFirstLoad */
+  }
 }

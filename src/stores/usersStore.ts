@@ -24,7 +24,7 @@ export class UsersStore {
   }
 
   private _fetchUsers = async () => {
-    console.log("feth")
+    this.isLoading = true
     const querySnapshot = await getDocs(collection(db, "users"))
 
     runInAction(() => {
@@ -32,6 +32,7 @@ export class UsersStore {
         const user = doc.data() as IUser
         this._users.push(user)
       })
+      this.isLoading = false
     })
   }
 

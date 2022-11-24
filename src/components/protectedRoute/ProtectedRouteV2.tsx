@@ -10,10 +10,10 @@ interface IProtectedRoute {
 }
 
 export const ProtectedRouteV2: FC<IProtectedRoute> = ({ outlet }) => {
-  const { authStore } = useStore()
+  const { authStore, firstRenderLoading } = useStore()
   const { user, isLoading } = authStore
 
-  if (isLoading) {
+  if (firstRenderLoading) {
     return <Loader />
   }
 

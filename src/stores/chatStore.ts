@@ -1,5 +1,5 @@
 import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, when } from "mobx";
 
 import { db } from "../firebase";
 import { RootStore } from "./rootStore";
@@ -38,6 +38,12 @@ export class ChatStore {
   constructor(rootStore: RootStore) {
     this._rootStore = rootStore
     makeAutoObservable(this)
+    when(
+      () => !!this._rootStore.currentUser?.uid,
+      () => {
+        this._fetchUsersChats()
+      }
+    )
   }
 
   toggleCurrentChat = (chatId: string, recipientUserInfo: IUserChatInfo) => {
@@ -109,6 +115,28 @@ export class ChatStore {
     //   // Changes have been written to the backend
     // }
   }
+
+  private _fetchUsersChats = async () => {
+    // if (!this._rootStore.currentUser?.uid) return
+    console.log("_fetchUsersChats zawel")
+
+    const docRef = doc(db, "userChats", this._rootStore.currentUser?.uid!)
+    const docSnapshot = await getDoc(docRef)
+
+    runInAction(() => {
+      if (docSnapshot.exists()) {
+        const userChats = docSnapshot.data()
+        this._chats = Object.entries(userChats)
+      }
+    })
+  }
+
+  // init = () => {
+  //   this._unsubSearchReaction = reaction(
+  //     () => this._rootStore.currentUser?.uid,
+  //     () => console.log("dasdsad")
+  //   )
+  // }
 
   get chats() {
     return this._chats
