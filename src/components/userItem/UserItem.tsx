@@ -1,5 +1,6 @@
-import { FC } from "react"
-import "./UserItem.scss"
+import "./UserItem.scss";
+
+import { FC } from "react";
 
 interface IUserItem {
   displayName: string

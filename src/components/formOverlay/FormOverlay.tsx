@@ -1,6 +1,8 @@
-import { FC } from "react"
-import Loader from "../loader/Loader"
-import "./FormOverlay.scss"
+import "./FormOverlay.scss";
+
+import { FC } from "react";
+
+import Loader from "../loader/Loader";
 
 const FormOverlay: FC = () => {
   return (

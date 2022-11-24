@@ -1,9 +1,9 @@
-import { observer } from "mobx-react-lite"
-import { FC } from "react"
-import { Navigate } from "react-router-dom"
-import { useStore } from "../../hooks/useStore"
+import { observer } from "mobx-react-lite";
+import { FC } from "react";
+import { Navigate } from "react-router-dom";
 
-import Loader from "../loader/Loader"
+import { useStore } from "../../hooks/useStore";
+import Loader from "../loader/Loader";
 
 interface IProtectedRoute {
   outlet: JSX.Element

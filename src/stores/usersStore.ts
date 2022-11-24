@@ -1,7 +1,8 @@
-import { getDocs, collection } from "firebase/firestore"
-import { makeAutoObservable, runInAction } from "mobx"
-import { db } from "../firebase"
-import { RootStore } from "./rootStore"
+import { collection, getDocs } from "firebase/firestore";
+import { makeAutoObservable, runInAction } from "mobx";
+
+import { db } from "../firebase";
+import { RootStore } from "./rootStore";
 
 export interface IUser {
   displayName: string

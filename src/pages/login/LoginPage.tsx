@@ -1,9 +1,11 @@
-import { observer } from "mobx-react-lite"
-import { FC, FormEvent, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import FormOverlay from "../../components/formOverlay/FormOverlay"
-import { useStore } from "../../hooks/useStore"
-import "./LoginPage.scss"
+import "./LoginPage.scss";
+
+import { observer } from "mobx-react-lite";
+import { FC, FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import FormOverlay from "../../components/formOverlay/FormOverlay";
+import { useStore } from "../../hooks/useStore";
 
 export interface IFormDataLogin {
   email: ""

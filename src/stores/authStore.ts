@@ -1,19 +1,15 @@
 import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-  User,
-} from "firebase/auth"
-import { setDoc, doc, getDoc } from "firebase/firestore"
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
-import { makeAutoObservable, runInAction } from "mobx"
-import { auth, storage, db } from "../firebase"
-import { IFormDataLogin } from "../pages/login/LoginPage"
-import { IFormData } from "../pages/register/RegisterPage"
-import { authObserver } from "../utils/firebase/authObserver"
+    createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup,
+    signOut, updateProfile, User
+} from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { makeAutoObservable, runInAction } from "mobx";
+
+import { auth, db, storage } from "../firebase";
+import { IFormDataLogin } from "../pages/login/LoginPage";
+import { IFormData } from "../pages/register/RegisterPage";
+import { authObserver } from "../utils/firebase/authObserver";
 
 export class AuthStore {
   user: User | null = null

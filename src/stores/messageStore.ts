@@ -1,10 +1,11 @@
-import { RootStore } from "./rootStore"
-import { arrayUnion, doc, onSnapshot, Timestamp, updateDoc } from "firebase/firestore"
-import { makeAutoObservable, runInAction } from "mobx"
-import { IMessage } from "../components/messageList/MessageList"
-import { db } from "../firebase"
-import { v4 as uuid } from "uuid"
-import { getStoregeImgItemUrls } from "../utils/firebase/storage"
+import { arrayUnion, doc, onSnapshot, Timestamp, updateDoc } from "firebase/firestore";
+import { makeAutoObservable, runInAction } from "mobx";
+import { v4 as uuid } from "uuid";
+
+import { IMessage } from "../components/messageList/MessageList";
+import { db } from "../firebase";
+import { getStoregeImgItemUrls } from "../utils/firebase/storage";
+import { RootStore } from "./rootStore";
 
 export class MessageStore {
   private _messages: IMessage[] = []

@@ -1,11 +1,12 @@
-import { observer } from "mobx-react-lite"
-import { FC, FormEvent, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import loadAvatar from "../../assets/img/addAvatar.png"
-import FormOverlay from "../../components/formOverlay/FormOverlay"
-import { useStore } from "../../hooks/useStore"
+import "./RegisterPage.scss";
 
-import "./RegisterPage.scss"
+import { observer } from "mobx-react-lite";
+import { FC, FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import loadAvatar from "../../assets/img/addAvatar.png";
+import FormOverlay from "../../components/formOverlay/FormOverlay";
+import { useStore } from "../../hooks/useStore";
 
 export interface IFormData {
   displayName: ""

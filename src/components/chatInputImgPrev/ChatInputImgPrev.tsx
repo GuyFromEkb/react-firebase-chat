@@ -1,5 +1,6 @@
-import { FC } from "react"
-import "./ChatInputImgPrev.scss"
+import "./ChatInputImgPrev.scss";
+
+import { FC } from "react";
 
 interface IProps {
   imgSrc: string

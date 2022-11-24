@@ -1,9 +1,11 @@
-import { FC, ReactNode, useState } from "react"
-import cn from "classnames"
-import { CSSTransition } from "react-transition-group"
-import { ReactComponent as Arrow } from "../../assets/img/expand_more.svg"
-import { observer } from "mobx-react-lite"
-import "./Accordion.scss"
+import "./Accordion.scss";
+
+import cn from "classnames";
+import { observer } from "mobx-react-lite";
+import { FC, ReactNode, useState } from "react";
+import { CSSTransition } from "react-transition-group";
+
+import { ReactComponent as Arrow } from "../../assets/img/expand_more.svg";
 
 interface IAccordion {
   children: ReactNode

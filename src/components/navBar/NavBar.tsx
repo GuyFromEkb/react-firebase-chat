@@ -1,6 +1,8 @@
-import { FC } from "react"
-import { useStore } from "../../hooks/useStore"
-import "./NavBar.scss"
+import "./NavBar.scss";
+
+import { FC } from "react";
+
+import { useStore } from "../../hooks/useStore";
 
 const NavBar: FC = () => {
   const { authStore } = useStore()

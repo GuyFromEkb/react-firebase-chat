@@ -1,8 +1,9 @@
-import { makeAutoObservable } from "mobx"
-import { AuthStore } from "./authStore"
-import { ChatStore } from "./chatStore"
-import { MessageStore } from "./messageStore"
-import { UsersStore } from "./usersStore"
+import { makeAutoObservable } from "mobx";
+
+import { AuthStore } from "./authStore";
+import { ChatStore } from "./chatStore";
+import { MessageStore } from "./messageStore";
+import { UsersStore } from "./usersStore";
 
 export class RootStore {
   authStore: AuthStore

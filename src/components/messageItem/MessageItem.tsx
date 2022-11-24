@@ -1,7 +1,9 @@
-import { FC, RefObject, useEffect } from "react"
-import cn from "classnames"
-import { getDateAndTime } from "../../utils/formatDate/getDateAndTime"
-import "./MessageItem.scss"
+import "./MessageItem.scss";
+
+import cn from "classnames";
+import { FC, RefObject, useEffect } from "react";
+
+import { getDateAndTime } from "../../utils/formatDate/getDateAndTime";
 
 interface IProps {
   isMyMessage: boolean
