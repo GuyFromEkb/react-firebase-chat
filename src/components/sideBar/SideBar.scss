@@ -1,6 +1,8 @@
 .sidebar {
-  flex: 1;
+  // flex: 1;
   background: #3e3c61;
   display: flex;
   flex-direction: column;
+  // flex-grow: 1;
+  width: 35%;
 }
