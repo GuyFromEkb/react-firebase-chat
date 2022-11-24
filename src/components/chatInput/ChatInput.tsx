@@ -1,11 +1,14 @@
-import { observer } from "mobx-react-lite"
-import { FC, useRef, useState } from "react"
-import ImgIcon from "../../assets/img/img.png"
-import { useStore } from "../../hooks/useStore"
-import { clearInputFileList } from "../../utils/chatInput/clearInputFileList"
-import { readAllFilesAsUrl } from "../../utils/chatInput/readAllFilesAsUrl"
-import ChatInputImgPrev from "../chatInputImgPrev/ChatInputImgPrev"
-import "./ChatInput.scss"
+import "./ChatInput.scss";
+
+import { observer } from "mobx-react-lite";
+import { FC, useRef, useState } from "react";
+import TextareaAutosize from "react-textarea-autosize";
+
+import ImgIcon from "../../assets/img/img.png";
+import { useStore } from "../../hooks/useStore";
+import { clearInputFileList } from "../../utils/chatInput/clearInputFileList";
+import { readAllFilesAsUrl } from "../../utils/chatInput/readAllFilesAsUrl";
+import ChatInputImgPrev from "../chatInputImgPrev/ChatInputImgPrev";
 
 export interface IPervImg {
   name: string
@@ -51,6 +54,10 @@ const ChatInput: FC = () => {
     clearInputFileList(refInputFile.current, fileName)
   }
 
+  const handleKeyInput = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    e.ctrlKey && e.key === "Enter" && onSend()
+  }
+
   return (
     <div className="chat-input">
       {!!prevImg.length && (
@@ -61,10 +68,13 @@ const ChatInput: FC = () => {
         </div>
       )}
       <div className="chat-input__wrap">
-        <input
-          placeholder="Type something..."
-          onChange={(e) => setText(e.target.value)}
+        <TextareaAutosize
           value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyInput}
+          placeholder="Type something..."
+          maxRows={4}
+          className="chat-input__text-area"
         />
         <div className="chat-input__send">
           <label>
