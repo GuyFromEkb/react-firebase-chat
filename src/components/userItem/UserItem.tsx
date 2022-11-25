@@ -1,7 +1,7 @@
 import "./UserItem.scss"
 
 import { FC, SyntheticEvent } from "react"
-import errorImgSrc from "../../assets/img/emptyAvatar.png"
+import errorImgSrc from "../../assets/img/avatar404.png"
 
 interface IUserItem {
   displayName: string
@@ -12,11 +12,7 @@ interface IUserItem {
 const UserItem: FC<IUserItem> = ({ displayName, photoUrl, onCreateChat }) => {
   return (
     <div onClick={onCreateChat} className="user-item">
-      <img
-        src={"http://semeynaya-kuchka.ru/wp-content/uploads/2019/07/milye-kotiki-26111111111.jpg"}
-        alt="avatar"
-        onError={handleImgError}
-      />
+      <img src={photoUrl} alt="avatar" onError={handleImgError} />
       <div>{displayName}</div>
     </div>
   )
