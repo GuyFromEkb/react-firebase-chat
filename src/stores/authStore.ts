@@ -1,15 +1,20 @@
 import {
-    createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup,
-    signOut, updateProfile, User
-} from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { makeAutoObservable, runInAction } from "mobx";
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+  User,
+} from "firebase/auth"
+import { doc, getDoc, setDoc } from "firebase/firestore"
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
+import { makeAutoObservable, runInAction } from "mobx"
 
-import { auth, db, storage } from "../firebase";
-import { IFormDataLogin } from "../pages/login/LoginPage";
-import { IFormData } from "../pages/register/RegisterPage";
-import { authObserver } from "../utils/firebase/authObserver";
+import { auth, db, storage } from "../firebase"
+import { IFormDataLogin } from "../pages/login/LoginPage"
+import { IFormData } from "../pages/register/RegisterPage"
+import { authObserver } from "../utils/firebase/authObserver"
 
 export class AuthStore {
   user: User | null = null
@@ -17,7 +22,6 @@ export class AuthStore {
 
   constructor() {
     makeAutoObservable(this)
-    this._checkAuth()
   }
 
   registerUser = async (userData: IFormData) => {
@@ -104,7 +108,7 @@ export class AuthStore {
     })
   }
 
-  private _checkAuth = async () => {
+  firstRenderCheckAuth = async () => {
     this.isLoading = true
     const res = await authObserver(auth)
 

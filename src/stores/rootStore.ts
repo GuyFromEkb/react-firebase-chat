@@ -1,15 +1,16 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction, when } from "mobx"
 
-import { AuthStore } from "./authStore";
-import { ChatStore } from "./chatStore";
-import { MessageStore } from "./messageStore";
-import { UsersStore } from "./usersStore";
+import { AuthStore } from "./authStore"
+import { ChatStore } from "./chatStore"
+import { MessageStore } from "./messageStore"
+import { UsersStore } from "./usersStore"
 
 export class RootStore {
   authStore: AuthStore
   usersStore: UsersStore
   chatStore: ChatStore
   messageStore: MessageStore
+  firstRenderIsLoading = false
 
   constructor() {
     this.authStore = new AuthStore()
@@ -17,6 +18,8 @@ export class RootStore {
     this.chatStore = new ChatStore(this)
     this.messageStore = new MessageStore(this)
     makeAutoObservable(this)
+
+    this._firstRender()
   }
 
   get currentUser() {
@@ -24,7 +27,24 @@ export class RootStore {
   }
 
   get firstRenderLoading() {
-    // this.chatStore.isLoading
-    return this.authStore.isLoading || this.usersStore.isLoading /*||  this.chatStore.isFirstLoad */
+    return this.authStore.isLoading || this.firstRenderIsLoading
+  }
+
+  private _firstRender = () => {
+    this.authStore.firstRenderCheckAuth()
+
+    when(
+      () => !!this.authStore?.user,
+      async () => {
+        this.firstRenderIsLoading = true
+        await Promise.all([
+          this.chatStore.firstRenderfetchUsersChats(),
+          this.usersStore.firstRenderfetchUsers(),
+        ])
+        runInAction(() => {
+          this.firstRenderIsLoading = false
+        })
+      }
+    )
   }
 }

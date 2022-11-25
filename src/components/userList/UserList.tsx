@@ -1,17 +1,17 @@
-import "./UserList.scss";
+import "./UserList.scss"
 
-import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import { observer } from "mobx-react-lite"
+import { FC } from "react"
 
-import { useStore } from "../../hooks/useStore";
-import { IUser } from "../../stores/usersStore";
-import Accordion from "../accordion/Accordion";
-import UserItem from "../userItem/UserItem";
+import { useStore } from "../../hooks/useStore"
+import { IUser } from "../../stores/usersStore"
+import Accordion from "../accordion/Accordion"
+import UserItem from "../userItem/UserItem"
 
 const UserList: FC = () => {
   const { usersStore, chatStore } = useStore()
   const { users } = usersStore
-  const { createChat, currentChatInfo } = chatStore
+  const { createChat } = chatStore
 
   const handleClick = (user: IUser) => () => {
     createChat(user)

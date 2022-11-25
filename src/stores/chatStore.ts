@@ -1,9 +1,9 @@
-import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore";
-import { makeAutoObservable, runInAction, when } from "mobx";
+import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
+import { makeAutoObservable, runInAction, when } from "mobx"
 
-import { db } from "../firebase";
-import { RootStore } from "./rootStore";
-import { IUser } from "./usersStore";
+import { db } from "../firebase"
+import { RootStore } from "./rootStore"
+import { IUser } from "./usersStore"
 
 export interface IUserChatInfo {
   uid: string
@@ -38,12 +38,6 @@ export class ChatStore {
   constructor(rootStore: RootStore) {
     this._rootStore = rootStore
     makeAutoObservable(this)
-    when(
-      () => !!this._rootStore.currentUser?.uid,
-      () => {
-        this._fetchUsersChats()
-      }
-    )
   }
 
   toggleCurrentChat = (chatId: string, recipientUserInfo: IUserChatInfo) => {
@@ -64,7 +58,9 @@ export class ChatStore {
       const docRef = doc(db, "chats", combinedId)
       const docSnap = await getDoc(docRef)
 
-      this.isLoading = true
+      runInAction(() => {
+        this.isLoading = true
+      })
 
       if (!docSnap.exists()) {
         await Promise.all([
@@ -116,10 +112,7 @@ export class ChatStore {
     // }
   }
 
-  private _fetchUsersChats = async () => {
-    // if (!this._rootStore.currentUser?.uid) return
-    console.log("_fetchUsersChats zawel")
-
+  firstRenderfetchUsersChats = async () => {
     const docRef = doc(db, "userChats", this._rootStore.currentUser?.uid!)
     const docSnapshot = await getDoc(docRef)
 
@@ -130,13 +123,6 @@ export class ChatStore {
       }
     })
   }
-
-  // init = () => {
-  //   this._unsubSearchReaction = reaction(
-  //     () => this._rootStore.currentUser?.uid,
-  //     () => console.log("dasdsad")
-  //   )
-  // }
 
   get chats() {
     return this._chats
