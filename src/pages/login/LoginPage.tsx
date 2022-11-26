@@ -6,6 +6,9 @@ import { FC, FormEvent, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import * as yup from "yup";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import FormOverlay from "../../components/formOverlay/FormOverlay";
 import { useStore } from "../../hooks/useStore";
@@ -16,39 +19,42 @@ export interface IFormDataLogin {
 }
 
 type Inputs = {
-  Email: string
+  email: string
   password: string
 }
 
+const schema = yup
+  .object({
+    email: yup.string().required().email("Введите корректный email"),
+    password: yup
+      .string()
+      .typeError("Должно быть строкой")
+      .required("Обязательно к заполнению")
+      .min(6, "Минимум 6 символлов"),
+  })
+  .required()
+
 const LoginPage: FC = () => {
   const { authStore } = useStore()
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
-  const onSubmitt: SubmitHandler<Inputs> = (data) => console.log(data)
-
-  const navigate = useNavigate()
-  const [formState, setFormState] = useState<IFormDataLogin>({
-    email: "",
-    password: "",
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema),
   })
-  const handleChangeForm =
-    (prop: keyof IFormDataLogin) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormState({ ...formState, [prop]: event.target.value })
-    }
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
-    const loginData = {
-      email: formState.email,
-      password: formState.password,
-    }
-
-    await authStore.login(loginData)
-    navigate("/")
+  const onSubmitOLD = async (event: FormEvent<HTMLFormElement>) => {
+    // event.preventDefault()
+    // const loginData = {
+    //   email: formState.email,
+    //   password: formState.password,
+    // }
+    // await authStore.login(loginData)
+    // navigate("/")
   }
 
   const onLoginWithGoogleAcc = async () => {
@@ -70,19 +76,9 @@ const LoginPage: FC = () => {
       <div className="form__wrap">
         <div className="form__title">React Chat</div>
         <div className="form__subtitle">Login</div>
-        <form onSubmit={onSubmit} className="form-reg">
-          <input
-            onChange={handleChangeForm("email")}
-            value={formState.email}
-            type="text"
-            placeholder="Email"
-          />
-          <input
-            onChange={handleChangeForm("password")}
-            value={formState.password}
-            type="Password"
-            placeholder="Password"
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="form-reg">
+          <input {...register("email", {})} placeholder="Email" />
+          <input {...register("password", {})} placeholder="Password" />
           <button>Login</button>
 
           <div className="form-reg__footer">
