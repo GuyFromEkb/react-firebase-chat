@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   &__wrap {
     display: flex;
     flex-direction: column;
@@ -12,13 +13,37 @@
     padding: 20px 60px;
     border-radius: 10px;
   }
+
   &__title {
     font-size: 24px;
     font-weight: bold;
     color: #5d5b8d;
   }
+
   &__subtitle {
     color: #5d5b8d;
+  }
+
+  label {
+    width: 100%;
+    position: relative;
+
+    input {
+      padding: 15px 10px 5px 10px;
+      width: 100%;
+
+      &:focus-visible {
+        outline: none
+      }
+    }
+  }
+
+  &__error {
+    position: absolute;
+    left: 10px;
+    top: -7px;
+    font-size: 13px;
+    color: #e74c3c;
   }
 }
 
@@ -30,9 +55,9 @@
   position: relative;
 
   input {
-    padding: 15px;
     border: none;
     border-bottom: 1px solid #a7bcff;
+
     &::placeholder {
       color: rgb(175, 175, 175);
     }

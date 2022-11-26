@@ -25,12 +25,8 @@ type Inputs = {
 
 const schema = yup
   .object({
-    email: yup.string().required().email("Введите корректный email"),
-    password: yup
-      .string()
-      .typeError("Должно быть строкой")
-      .required("Обязательно к заполнению")
-      .min(6, "Минимум 6 символлов"),
+    email: yup.string().typeError("is should be string").required().email(),
+    password: yup.string().typeError("is should be string").required().min(6),
   })
   .required()
 
@@ -41,8 +37,11 @@ const LoginPage: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    clearErrors,
   } = useForm<Inputs>({
+    mode: "onSubmit",
     resolver: yupResolver(schema),
+    reValidateMode: "onBlur",
   })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
@@ -77,8 +76,28 @@ const LoginPage: FC = () => {
         <div className="form__title">React Chat</div>
         <div className="form__subtitle">Login</div>
         <form onSubmit={handleSubmit(onSubmit)} className="form-reg">
-          <input {...register("email", {})} placeholder="Email" />
-          <input {...register("password", {})} placeholder="Password" />
+          <label>
+            {errors.email && <div className="form__error">{errors.email.message}</div>}
+            <input
+              {...register("email", {
+                onChange: () => {
+                  clearErrors("email")
+                },
+              })}
+              placeholder="Email"
+            />
+          </label>
+          <label>
+            {errors.password && <div className="form__error">{errors.password.message}</div>}
+            <input
+              {...register("password", {
+                onChange: () => {
+                  clearErrors("password")
+                },
+              })}
+              placeholder="Password"
+            />
+          </label>
           <button>Login</button>
 
           <div className="form-reg__footer">
