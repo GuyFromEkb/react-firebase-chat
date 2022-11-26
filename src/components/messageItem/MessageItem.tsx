@@ -4,6 +4,7 @@ import cn from "classnames";
 import { FC, RefObject, useEffect } from "react";
 
 import { getDateAndTime } from "../../utils/formatDate/getDateAndTime";
+import Avatar from "../avatar/Avatar";
 
 interface IProps {
   isMyMessage: boolean
@@ -30,7 +31,7 @@ const MessageItem: FC<IProps> = ({ avatarUrl, isMyMessage, text, date, refLastMe
   return (
     <div ref={refLastMessage} className={cn("message-item", isMyMessage && "owner")}>
       <div title={messageFullDate} className="message-item__info">
-        <img src={avatarUrl} alt="avatar" />
+        <Avatar className="message-item__avatar" photoUrl={avatarUrl} />
         <span className="message-item__time">{messageTime}</span>
       </div>
       <div className="message-item__content ">

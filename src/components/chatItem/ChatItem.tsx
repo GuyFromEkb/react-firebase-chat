@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import { FC } from "react";
 
 import { ICurrentUserChats } from "../../stores/chatStore";
+import Avatar from "../avatar/Avatar";
 
 interface IProps extends Omit<ICurrentUserChats, "date"> {
   toggleChat: () => void
@@ -21,7 +22,7 @@ const ChatItem: FC<IProps> = ({
 }) => {
   return (
     <div onClick={toggleChat} className={cn("chat-item", isCurrentChat && "current-chat")}>
-      <img src={userInfo.photoURL} alt="userAvatar" />
+      <Avatar photoUrl={userInfo.photoURL} />
       <div className="chat-item__right-side">
         <div className="chat-item__name">{userInfo.displayName}</div>
         <div className="chat-item__last-message">

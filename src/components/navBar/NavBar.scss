@@ -21,13 +21,12 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    img {
-      max-height: 24px;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-      border-radius: 50%;
-    }
   }
+
+  &__avatar {
+    max-height: 24px;
+  }
+
   &__logout {
     border-radius: 2px;
     padding: 5px;

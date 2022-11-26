@@ -3,6 +3,7 @@ import "./NavBar.scss";
 import { FC } from "react";
 
 import { useStore } from "../../hooks/useStore";
+import Avatar from "../avatar/Avatar";
 
 const NavBar: FC = () => {
   const { authStore } = useStore()
@@ -10,7 +11,7 @@ const NavBar: FC = () => {
   return (
     <div className="navbar">
       <div className="navbar__profile-wrap">
-        <img src={user?.photoURL ? user?.photoURL : ""} alt="avatar" />
+        <Avatar className="navbar__avatar" photoUrl={user?.photoURL} />
         <div>{user?.displayName}</div>
       </div>
       <button onClick={logOut} className="navbar__logout">
