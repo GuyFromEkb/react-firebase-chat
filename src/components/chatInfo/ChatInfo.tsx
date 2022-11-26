@@ -7,9 +7,10 @@ import { useStore } from "../../hooks/useStore";
 
 const ChatInfo: FC = () => {
   const { chatStore } = useStore()
+  const { isLoadingCreateNewChat, currentChatInfo } = chatStore
   return (
     <div className="chat-info">
-      <span>{chatStore?.currentChatInfo?.recipientUserInfo.displayName || ""}</span>
+      <span>{!isLoadingCreateNewChat && currentChatInfo?.recipientUserInfo.displayName}</span>
     </div>
   )
 }

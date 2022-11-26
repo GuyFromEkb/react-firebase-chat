@@ -1,9 +1,9 @@
-import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
-import { makeAutoObservable, runInAction, when } from "mobx"
+import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { makeAutoObservable, runInAction, when } from "mobx";
 
-import { db } from "../firebase"
-import { RootStore } from "./rootStore"
-import { IUser } from "./usersStore"
+import { db } from "../firebase";
+import { RootStore } from "./rootStore";
+import { IUser } from "./usersStore";
 
 export interface IUserChatInfo {
   uid: string
@@ -32,7 +32,7 @@ export interface ICurrentChatInfo {
 export class ChatStore {
   private _chats: [string, ICurrentUserChats][] = []
   private _rootStore: RootStore
-  isLoading = false
+  isLoadingCreateNewChat = false
   currentChatInfo: ICurrentChatInfo | null = null
 
   constructor(rootStore: RootStore) {
@@ -59,7 +59,7 @@ export class ChatStore {
       const docSnap = await getDoc(docRef)
 
       runInAction(() => {
-        this.isLoading = true
+        this.isLoadingCreateNewChat = true
       })
 
       if (!docSnap.exists()) {
@@ -89,7 +89,7 @@ export class ChatStore {
     } finally {
       console.log("zawel v final")
       runInAction(() => {
-        this.isLoading = false
+        this.isLoadingCreateNewChat = false
         this.toggleCurrentChat(combinedId, user)
       })
     }
