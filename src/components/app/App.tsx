@@ -3,6 +3,7 @@ import "./App.scss";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import LoginPage from "../../pages/login/LoginPage";
 import MainPage from "../../pages/main/MainPage";
@@ -19,6 +20,7 @@ const App: FC = () => {
           <Route path="register" element={<RegisterPage />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </>
   )
 }
