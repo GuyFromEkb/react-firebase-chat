@@ -1,8 +1,11 @@
 import "./LoginPage.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 import { observer } from "mobx-react-lite";
 import { FC, FormEvent, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 import FormOverlay from "../../components/formOverlay/FormOverlay";
 import { useStore } from "../../hooks/useStore";
@@ -12,8 +15,20 @@ export interface IFormDataLogin {
   password: ""
 }
 
+type Inputs = {
+  Email: string
+  password: string
+}
+
 const LoginPage: FC = () => {
   const { authStore } = useStore()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>()
+  const onSubmitt: SubmitHandler<Inputs> = (data) => console.log(data)
+
   const navigate = useNavigate()
   const [formState, setFormState] = useState<IFormDataLogin>({
     email: "",
@@ -40,6 +55,15 @@ const LoginPage: FC = () => {
     await authStore.loginWithGoogleAcc()
     navigate("/")
   }
+
+  const notify = () =>
+    toast.error(
+      "Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!",
+      {
+        closeButton: false,
+        autoClose: 4000,
+      }
+    )
 
   return (
     <div className="form">
@@ -72,6 +96,7 @@ const LoginPage: FC = () => {
           {authStore.isLoading && <FormOverlay />}
         </form>
       </div>
+      <button onClick={notify}>Toast</button>
     </div>
   )
 }
