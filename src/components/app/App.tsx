@@ -1,4 +1,5 @@
 import "./App.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
