@@ -1,30 +1,32 @@
 import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-  User,
-} from "firebase/auth"
-import { doc, getDoc, setDoc } from "firebase/firestore"
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
-import { makeAutoObservable, runInAction } from "mobx"
+    createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup,
+    signOut, updateProfile, User
+} from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { makeAutoObservable, runInAction } from "mobx";
 
-import { auth, db, storage } from "../firebase"
-import { IFormDataLogin } from "../pages/login/LoginPage"
-import { IFormData } from "../pages/register/RegisterPage"
-import { authObserver } from "../utils/firebase/authObserver"
+import { auth, db, storage } from "../firebase";
+import { IFormData } from "../pages/register/RegisterPage";
+import { authObserver } from "../utils/firebase/authObserver";
+import { handleFirebaseError } from "../utils/firebase/handleError";
 
 export class AuthStore {
   user: User | null = null
   isLoading = false
+  error: string | null = null
 
   constructor() {
     makeAutoObservable(this)
   }
 
+  reset = () => {
+    this.isLoading = false
+    this.error = null
+  }
+
   registerUser = async (userData: IFormData) => {
+    this.reset()
     const { email, password, displayName, avatar } = userData
     if (!avatar) return
 
@@ -57,17 +59,28 @@ export class AuthStore {
     })
   }
 
-  login = async (userData: IFormDataLogin) => {
+  login = async (userData: { email: string; password: string }) => {
+    this.reset()
     this.isLoading = true
-    const { user } = await signInWithEmailAndPassword(auth, userData.email, userData.password)
-
-    runInAction(() => {
-      this.user = user
-      this.isLoading = false
-    })
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, userData.email, userData.password)
+      runInAction(() => {
+        this.user = user
+      })
+      return true
+    } catch (error) {
+      runInAction(() => {
+        this.error = handleFirebaseError(error)
+      })
+    } finally {
+      runInAction(() => {
+        this.isLoading = false
+      })
+    }
   }
 
   loginWithGoogleAcc = async () => {
+    this.reset()
     const provider = new GoogleAuthProvider()
     this.isLoading = true
 
@@ -93,6 +106,8 @@ export class AuthStore {
         this.user = user
         this.isLoading = false
       })
+    } catch (error) {
+      handleFirebaseError(error)
     } finally {
       runInAction(() => {
         this.isLoading = false

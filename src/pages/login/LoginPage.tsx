@@ -1,11 +1,10 @@
 import "./LoginPage.scss";
-import "react-toastify/dist/ReactToastify.css";
 
 import { observer } from "mobx-react-lite";
-import { FC, FormEvent, useState } from "react";
+import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -44,31 +43,31 @@ const LoginPage: FC = () => {
     reValidateMode: "onBlur",
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+  useEffect(() => {
+    return () => {
+      toast.dismiss()
+      authStore.reset()
+    }
+  }, [authStore])
 
-  const onSubmitOLD = async (event: FormEvent<HTMLFormElement>) => {
-    // event.preventDefault()
-    // const loginData = {
-    //   email: formState.email,
-    //   password: formState.password,
-    // }
-    // await authStore.login(loginData)
-    // navigate("/")
+  useEffect(() => {
+    if (!authStore.error) return
+
+    toast.error(authStore.error, {
+      closeButton: false,
+      autoClose: 2500,
+    })
+  }, [authStore.error])
+
+  const onSubmit: SubmitHandler<Inputs> = async (userData) => {
+    const isAccess = await authStore.login(userData)
+    isAccess && navigate("/")
   }
 
   const onLoginWithGoogleAcc = async () => {
     await authStore.loginWithGoogleAcc()
     navigate("/")
   }
-
-  const notify = () =>
-    toast.error(
-      "Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!Wow so easy!",
-      {
-        closeButton: false,
-        autoClose: 4000,
-      }
-    )
 
   return (
     <div className="form">
@@ -111,7 +110,6 @@ const LoginPage: FC = () => {
           {authStore.isLoading && <FormOverlay />}
         </form>
       </div>
-      <button onClick={notify}>Toast</button>
     </div>
   )
 }
