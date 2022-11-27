@@ -24,8 +24,16 @@ type Inputs = {
 
 const schema = yup
   .object({
-    email: yup.string().typeError("is should be string").required().email(),
-    password: yup.string().typeError("is should be string").required().min(6),
+    email: yup
+      .string()
+      .typeError("Is should be string")
+      .required("E-mail is a required field")
+      .email("Invalid e-mail"),
+    password: yup
+      .string()
+      .typeError("Is should be string")
+      .required("Password is a required field")
+      .min(6, "Password must be at least 6 characters"),
   })
   .required()
 
