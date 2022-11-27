@@ -2,7 +2,11 @@ import "./RegisterPage.scss";
 
 import { observer } from "mobx-react-lite";
 import { FC, FormEvent, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import schema from "yup/lib/schema";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import loadAvatar from "../../assets/img/addAvatar.png";
 import FormOverlay from "../../components/formOverlay/FormOverlay";
@@ -14,16 +18,35 @@ export interface IFormData {
   password: ""
   avatar: File | undefined
 }
+
+type Inputs = {
+  displayName: string
+  email: string
+  password: string
+  avatar: FileList
+}
+
 const RegisterPage: FC = () => {
   const { authStore } = useStore()
   const navigate = useNavigate()
-  const [formState, setFormState] = useState<IFormData>({
-    displayName: "",
-    email: "",
-    password: "",
-    avatar: undefined,
-  })
   const [prevAvatar, setPrevAvatar] = useState("")
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+  } = useForm<Inputs>({
+    mode: "onSubmit",
+    reValidateMode: "onBlur",
+    // resolver: yupResolver(schema),
+  })
+
+  const onSubmit: SubmitHandler<Inputs> = async (userData) => {
+    console.log("userData", userData)
+    // const isAccess = await authStore.login(userData)
+    // isAccess && navigate("/")
+  }
 
   const handleChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imgFile = e.target.files?.[0]
@@ -39,55 +62,29 @@ const RegisterPage: FC = () => {
     }
   }
 
-  const handleChangeForm =
-    (prop: keyof IFormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (prop === "avatar") {
-        setFormState({ ...formState, [prop]: event.target.files?.[0] })
-        handleChangeAvatar(event)
-        return
-      }
+  // const onSubmitOLD = async (event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault()
 
-      setFormState({ ...formState, [prop]: event.target.value })
-    }
+  //   // const registerData = {
+  //   //   displayName: formState.displayName,
+  //   //   email: formState.email,
+  //   //   password: formState.password,
+  //   //   avatar: formState.avatar,
+  //   // }
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const registerData = {
-      displayName: formState.displayName,
-      email: formState.email,
-      password: formState.password,
-      avatar: formState.avatar,
-    }
-
-    await authStore.registerUser(registerData)
-    navigate("/")
-  }
+  //   // await authStore.registerUser(registerData)
+  //   // navigate("/")
+  // }
 
   return (
     <div className="form">
       <div className="form__wrap">
         <div className="form__title">React Chat</div>
         <div className="form__subtitle">Register</div>
-        <form onSubmit={onSubmit} className="form-reg">
-          <input
-            onChange={handleChangeForm("displayName")}
-            name="displayName"
-            type="text"
-            placeholder="Display Name"
-          />
-          <input
-            onChange={handleChangeForm("email")}
-            name="email"
-            type="text"
-            placeholder="Email"
-          />
-          <input
-            onChange={handleChangeForm("password")}
-            name="password"
-            type="Password"
-            placeholder="Password"
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="form-reg">
+          <input {...register("displayName")} placeholder="Display Name" />
+          <input {...register("email")} placeholder="Email" />
+          <input {...register("password")} type="Password" placeholder="Password" />
           <label className="form-reg__input-file">
             <img
               style={{ borderRadius: prevAvatar && "50%" }}
@@ -96,8 +93,11 @@ const RegisterPage: FC = () => {
             />
             <span>Add an avatar</span>
             <input
-              name="avatar"
-              onChange={handleChangeForm("avatar")}
+              {...register("avatar")}
+              onChange={(e) => {
+                register("avatar").onChange(e)
+                handleChangeAvatar(e)
+              }}
               accept="image/*"
               type="file"
             />

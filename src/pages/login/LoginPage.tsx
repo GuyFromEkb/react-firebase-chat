@@ -12,11 +12,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import FormOverlay from "../../components/formOverlay/FormOverlay";
 import { useStore } from "../../hooks/useStore";
 
-export interface IFormDataLogin {
-  email: ""
-  password: ""
-}
-
 type Inputs = {
   email: string
   password: string
@@ -103,6 +98,7 @@ const LoginPage: FC = () => {
                 },
               })}
               placeholder="Password"
+              type="password"
             />
           </label>
           <button>Login</button>
