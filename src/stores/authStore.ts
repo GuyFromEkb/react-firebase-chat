@@ -7,7 +7,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { makeAutoObservable, runInAction } from "mobx";
 
 import { auth, db, storage } from "../firebase";
-import { IFormData } from "../pages/register/RegisterPage";
+import { IFormData, IRegisterInputs } from "../pages/register/RegisterPage";
 import { authObserver } from "../utils/firebase/authObserver";
 import { handleFirebaseError } from "../utils/firebase/handleError";
 
@@ -25,38 +25,51 @@ export class AuthStore {
     this.error = null
   }
 
-  registerUser = async (userData: IFormData) => {
+  registerUser = async (userData: IRegisterInputs) => {
     this.reset()
-    const { email, password, displayName, avatar } = userData
-    if (!avatar) return
-
     this.isLoading = true
-    const { user } = await createUserWithEmailAndPassword(auth, email, password)
-    runInAction(() => (this.user = user))
+
+    const { email, password, displayName, avatar } = userData
+    const avatarImg = avatar?.[0]
+
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, email, password)
+      runInAction(() => (this.user = user))
+
+      const avatarUrl = await this.uploadAvatar(avatarImg, displayName)
+
+      await Promise.all([
+        updateProfile(user, {
+          displayName,
+          photoURL: avatarUrl,
+        }),
+        setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          displayName,
+          email,
+          photoURL: avatarUrl,
+        }),
+        setDoc(doc(db, "userChats", user.uid), {}),
+      ])
+
+      return true
+    } catch (error) {
+    } finally {
+      runInAction(() => {
+        this.isLoading = false
+      })
+    }
+  }
+
+  private uploadAvatar = async (avatarImg: File | undefined, displayName: string) => {
+    if (!avatarImg) return null
 
     const date = new Date().getTime()
     const storageRef = ref(storage, `${displayName + date}`)
+    await uploadBytesResumable(storageRef, avatarImg)
 
-    await uploadBytesResumable(storageRef, avatar)
     const avatarURL = await getDownloadURL(storageRef)
-
-    await updateProfile(user, {
-      displayName,
-      photoURL: avatarURL,
-    })
-
-    await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
-      displayName,
-      email,
-      photoURL: avatarURL,
-    })
-
-    await setDoc(doc(db, "userChats", user.uid), {})
-
-    runInAction(() => {
-      this.isLoading = false
-    })
+    return avatarURL
   }
 
   login = async (userData: { email: string; password: string }) => {
@@ -133,3 +146,39 @@ export class AuthStore {
     })
   }
 }
+
+// registerUser = async (userData: IRegisterInputs) => {
+//   this.reset()
+//   const { email, password, displayName, avatar } = userData
+
+//   console.log("userData", userData.avatar?.[0])
+
+//   // if (!avatar) return
+//   // this.isLoading = true
+//   // const { user } = await createUserWithEmailAndPassword(auth, email, password)
+//   // runInAction(() => (this.user = user))
+
+//   // const date = new Date().getTime()
+//   // const storageRef = ref(storage, `${displayName + date}`)
+
+//   // await uploadBytesResumable(storageRef, avatar)
+//   // const avatarURL = await getDownloadURL(storageRef)
+
+//   // await updateProfile(user, {
+//   //   displayName,
+//   //   photoURL: avatarURL,
+//   // })
+
+//   // await setDoc(doc(db, "users", user.uid), {
+//   //   uid: user.uid,
+//   //   displayName,
+//   //   email,
+//   //   photoURL: avatarURL,
+//   // })
+
+//   // await setDoc(doc(db, "userChats", user.uid), {})
+
+//   // runInAction(() => {
+//   //   this.isLoading = false
+//   // })
+// }

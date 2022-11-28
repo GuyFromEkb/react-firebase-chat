@@ -1,10 +1,10 @@
 import "./RegisterPage.scss";
 
 import { observer } from "mobx-react-lite";
-import { FC, FormEvent, useState } from "react";
+import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import schema from "yup/lib/schema";
+import * as yup from "yup";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -19,11 +19,31 @@ export interface IFormData {
   avatar: File | undefined
 }
 
-type Inputs = {
+const schema = yup
+  .object({
+    displayName: yup
+      .string()
+      .typeError("Is should be string")
+      .required("Display name is a required field")
+      .min(3, "Display name must be at least 3 characters"),
+    email: yup
+      .string()
+      .typeError("Is should be string")
+      .required("E-mail is a required field")
+      .email("Invalid e-mail"),
+    password: yup
+      .string()
+      .typeError("Is should be string")
+      .required("Password is a required field")
+      .min(6, "Password must be at least 6 characters"),
+  })
+  .required()
+
+export interface IRegisterInputs {
   displayName: string
   email: string
   password: string
-  avatar: FileList
+  avatar?: FileList
 }
 
 const RegisterPage: FC = () => {
@@ -36,16 +56,16 @@ const RegisterPage: FC = () => {
     handleSubmit,
     formState: { errors },
     clearErrors,
-  } = useForm<Inputs>({
+  } = useForm<IRegisterInputs>({
     mode: "onSubmit",
     reValidateMode: "onBlur",
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   })
 
-  const onSubmit: SubmitHandler<Inputs> = async (userData) => {
-    console.log("userData", userData)
-    // const isAccess = await authStore.login(userData)
-    // isAccess && navigate("/")
+  const onSubmit: SubmitHandler<IRegisterInputs> = async (userData) => {
+    await authStore.registerUser(userData)
+    const isRegistered = await authStore.login(userData)
+    isRegistered && navigate("/")
   }
 
   const handleChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,10 +101,33 @@ const RegisterPage: FC = () => {
       <div className="form__wrap">
         <div className="form__title">React Chat</div>
         <div className="form__subtitle">Register</div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="form-reg">
-          <input {...register("displayName")} placeholder="Display Name" />
-          <input {...register("email")} placeholder="Email" />
-          <input {...register("password")} type="Password" placeholder="Password" />
+          <label>
+            {errors.displayName && <div className="form__error">{errors.displayName.message}</div>}
+            <input
+              {...register("displayName")}
+              onChange={() => clearErrors("displayName")}
+              placeholder="Display Name"
+            />
+          </label>
+          <label>
+            {errors.email && <div className="form__error">{errors.email.message}</div>}
+            <input
+              {...register("email")}
+              onChange={() => clearErrors("email")}
+              placeholder="Email"
+            />
+          </label>
+          <label>
+            {errors.password && <div className="form__error">{errors.password.message}</div>}
+            <input
+              {...register("password")}
+              onChange={() => clearErrors("password")}
+              type="Password"
+              placeholder="Password"
+            />
+          </label>
           <label className="form-reg__input-file">
             <img
               style={{ borderRadius: prevAvatar && "50%" }}
