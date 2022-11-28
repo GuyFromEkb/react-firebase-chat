@@ -1,10 +1,10 @@
-import "./ChatList.scss";
+import "./ChatList.scss"
 
-import { observer } from "mobx-react-lite";
-import { FC, useEffect } from "react";
+import { useStore } from "hooks/useStore"
+import { observer } from "mobx-react-lite"
+import { FC, useEffect } from "react"
 
-import { useStore } from "../../hooks/useStore";
-import ChatItem from "../chatItem/ChatItem";
+import ChatItem from "components/chatItem/ChatItem"
 
 const ChatList: FC = () => {
   const { chatStore, currentUser } = useStore()

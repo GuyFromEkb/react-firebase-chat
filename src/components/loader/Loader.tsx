@@ -1,6 +1,6 @@
-import "./Loader.scss";
+import "./Loader.scss"
 
-import { FC } from "react";
+import { FC } from "react"
 
 const Loader: FC = () => {
   return (

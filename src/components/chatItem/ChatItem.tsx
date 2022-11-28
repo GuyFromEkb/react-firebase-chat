@@ -1,11 +1,11 @@
-import "./ChatItem.scss";
+import "./ChatItem.scss"
 
-import cn from "classnames";
-import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import cn from "classnames"
+import { observer } from "mobx-react-lite"
+import { FC } from "react"
+import { ICurrentUserChats } from "stores/chatStore"
 
-import { ICurrentUserChats } from "../../stores/chatStore";
-import Avatar from "../avatar/Avatar";
+import Avatar from "components/avatar/Avatar"
 
 interface IProps extends Omit<ICurrentUserChats, "date"> {
   toggleChat: () => void

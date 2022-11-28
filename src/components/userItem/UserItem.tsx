@@ -1,8 +1,8 @@
-import "./UserItem.scss";
+import "./UserItem.scss"
 
-import { FC } from "react";
+import { FC } from "react"
 
-import Avatar from "../avatar/Avatar";
+import Avatar from "components/avatar/Avatar"
 
 interface IUserItem {
   displayName: string

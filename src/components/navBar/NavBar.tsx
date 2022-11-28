@@ -1,9 +1,9 @@
-import "./NavBar.scss";
+import "./NavBar.scss"
 
-import { FC } from "react";
+import { useStore } from "hooks/useStore"
+import { FC } from "react"
 
-import { useStore } from "../../hooks/useStore";
-import Avatar from "../avatar/Avatar";
+import Avatar from "components/avatar/Avatar"
 
 const NavBar: FC = () => {
   const { authStore } = useStore()

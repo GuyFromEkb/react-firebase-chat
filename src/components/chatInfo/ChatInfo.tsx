@@ -1,9 +1,8 @@
-import "./ChatInfo.scss";
+import "./ChatInfo.scss"
 
-import { observer } from "mobx-react-lite";
-import { FC } from "react";
-
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "hooks/useStore"
+import { observer } from "mobx-react-lite"
+import { FC } from "react"
 
 const ChatInfo: FC = () => {
   const { chatStore } = useStore()

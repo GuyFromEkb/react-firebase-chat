@@ -1,10 +1,10 @@
-import "./MessageItem.scss";
+import "./MessageItem.scss"
 
-import cn from "classnames";
-import { FC, RefObject, useEffect } from "react";
+import cn from "classnames"
+import { FC, RefObject, useEffect } from "react"
+import { getDateAndTime } from "utils/formatDate/getDateAndTime"
 
-import { getDateAndTime } from "../../utils/formatDate/getDateAndTime";
-import Avatar from "../avatar/Avatar";
+import Avatar from "components/avatar/Avatar"
 
 interface IProps {
   isMyMessage: boolean

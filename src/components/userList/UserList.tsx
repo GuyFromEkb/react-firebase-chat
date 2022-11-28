@@ -1,12 +1,12 @@
 import "./UserList.scss"
 
+import { useStore } from "hooks/useStore"
 import { observer } from "mobx-react-lite"
 import { FC } from "react"
+import { IUser } from "stores/usersStore"
 
-import { useStore } from "../../hooks/useStore"
-import { IUser } from "../../stores/usersStore"
-import Accordion from "../accordion/Accordion"
-import UserItem from "../userItem/UserItem"
+import Accordion from "components/accordion/Accordion"
+import UserItem from "components/userItem/UserItem"
 
 const UserList: FC = () => {
   const { usersStore, chatStore } = useStore()

@@ -1,6 +1,6 @@
-import "./ChatEmptyList.scss";
+import "./ChatEmptyList.scss"
 
-import { FC } from "react";
+import { FC } from "react"
 
 interface IProps {
   isLoadingCreateNewChat: boolean

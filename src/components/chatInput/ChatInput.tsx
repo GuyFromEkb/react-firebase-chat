@@ -1,14 +1,14 @@
-import "./ChatInput.scss";
+import "./ChatInput.scss"
 
-import { observer } from "mobx-react-lite";
-import { FC, useRef, useState } from "react";
-import TextareaAutosize from "react-textarea-autosize";
+import emptyAvatarIcon from "assets/img/img.png"
+import { useStore } from "hooks/useStore"
+import { observer } from "mobx-react-lite"
+import { FC, useRef, useState } from "react"
+import TextareaAutosize from "react-textarea-autosize"
+import { clearInputFileList } from "utils/chatInput/clearInputFileList"
+import { readAllFilesAsUrl } from "utils/chatInput/readAllFilesAsUrl"
 
-import ImgIcon from "../../assets/img/img.png";
-import { useStore } from "../../hooks/useStore";
-import { clearInputFileList } from "../../utils/chatInput/clearInputFileList";
-import { readAllFilesAsUrl } from "../../utils/chatInput/readAllFilesAsUrl";
-import ChatInputImgPrev from "../chatInputImgPrev/ChatInputImgPrev";
+import ChatInputImgPrev from "components/chatInputImgPrev/ChatInputImgPrev"
 
 export interface IPervImg {
   name: string
@@ -85,7 +85,7 @@ const ChatInput: FC = () => {
               multiple
               onChange={handleAddImgs}
             />
-            <img src={ImgIcon} alt="Img Icon" />
+            <img src={emptyAvatarIcon} alt="Img Icon" />
           </label>
           <button onClick={onSend}>{isLoading.files ? "Loading" : "Send"}</button>
         </div>

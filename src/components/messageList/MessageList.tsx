@@ -1,10 +1,10 @@
-import "./MessageList.scss";
+import "./MessageList.scss"
 
-import { observer } from "mobx-react-lite";
-import { FC, useEffect, useRef } from "react";
+import { useStore } from "hooks/useStore"
+import { observer } from "mobx-react-lite"
+import { FC, useEffect, useRef } from "react"
 
-import { useStore } from "../../hooks/useStore";
-import MessageItem from "../messageItem/MessageItem";
+import MessageItem from "components/messageItem/MessageItem"
 
 export interface Date {
   seconds: number

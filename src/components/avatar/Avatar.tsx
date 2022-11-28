@@ -1,9 +1,9 @@
-import "./Avatar.scss";
+import "./Avatar.scss"
 
-import iconAvatarEmpty from "assets/img/avatarEmpty.png";
-import cn from "classnames";
-import { FC } from "react";
-import { handleImgError } from "utils/avatar/handleError";
+import iconAvatarEmpty from "assets/img/avatarEmpty.png"
+import cn from "classnames"
+import { FC } from "react"
+import { handleImgError } from "utils/avatar/handleError"
 
 interface IProps {
   photoUrl?: null | string

@@ -1,12 +1,11 @@
-import "./style/index.scss";
+import "style/index.scss"
 
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { RootStoreContext } from "hooks/useStore"
+import ReactDOM from "react-dom/client"
+import { BrowserRouter } from "react-router-dom"
+import { RootStore } from "stores/rootStore"
 
-import App from "./components/app/App";
-import { RootStoreContext } from "./hooks/useStore";
-import { RootStore } from "./stores/rootStore";
+import App from "components/app/App"
 
 const rootStore = new RootStore()
 

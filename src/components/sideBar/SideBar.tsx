@@ -1,10 +1,10 @@
-import "./SideBar.scss";
+import "./SideBar.scss"
 
-import { FC } from "react";
+import { FC } from "react"
 
-import ChatList from "../chatList/ChatList";
-import NavBar from "../navBar/NavBar";
-import UserList from "../userList/UserList";
+import ChatList from "components/chatList/ChatList"
+import NavBar from "components/navBar/NavBar"
+import UserList from "components/userList/UserList"
 
 const SideBar: FC = () => {
   return (
