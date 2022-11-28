@@ -1,9 +1,9 @@
-import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore";
-import { makeAutoObservable, runInAction, when } from "mobx";
+import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
+import { makeAutoObservable, runInAction } from "mobx"
 
-import { db } from "../firebase";
-import { RootStore } from "./rootStore";
-import { IUser } from "./usersStore";
+import { db } from "../firebase"
+import { RootStore } from "./rootStore"
+import { IUser } from "./usersStore"
 
 export interface IUserChatInfo {
   uid: string

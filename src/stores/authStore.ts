@@ -6,15 +6,15 @@ import {
   signOut,
   updateProfile,
   User
-} from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { makeAutoObservable, runInAction } from "mobx";
+} from "firebase/auth"
+import { doc, getDoc, setDoc } from "firebase/firestore"
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
+import { makeAutoObservable, runInAction } from "mobx"
 
-import { auth, db, storage } from "../firebase";
-import { IRegisterInputs } from "../pages/register/RegisterPage";
-import { authObserver } from "../utils/firebase/authObserver";
-import { handleFirebaseError } from "../utils/firebase/handleError";
+import { auth, db, storage } from "../firebase"
+import { IRegisterInputs } from "../pages/register/RegisterPage"
+import { authObserver } from "../utils/firebase/authObserver"
+import { handleFirebaseError } from "../utils/firebase/handleError"
 
 export class AuthStore {
   user: User | null = null
