@@ -3,10 +3,12 @@ import { makeAutoObservable, runInAction, when } from "mobx"
 import { AuthStore } from "./authStore"
 import { ChatStore } from "./chatStore"
 import { MessageStore } from "./messageStore"
+import { ProfileStore } from "./profileStore"
 import { UsersStore } from "./usersStore"
 
 export class RootStore {
   authStore: AuthStore
+  profileStore: ProfileStore
   usersStore: UsersStore
   chatStore: ChatStore
   messageStore: MessageStore
@@ -14,6 +16,7 @@ export class RootStore {
 
   constructor() {
     this.authStore = new AuthStore()
+    this.profileStore = new ProfileStore(this)
     this.usersStore = new UsersStore(this)
     this.chatStore = new ChatStore(this)
     this.messageStore = new MessageStore(this)

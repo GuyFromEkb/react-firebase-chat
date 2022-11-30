@@ -152,38 +152,3 @@ export class AuthStore {
   }
 }
 
-// registerUser = async (userData: IRegisterInputs) => {
-//   this.reset()
-//   const { email, password, displayName, avatar } = userData
-
-//   console.log("userData", userData.avatar?.[0])
-
-//   // if (!avatar) return
-//   // this.isLoading = true
-//   // const { user } = await createUserWithEmailAndPassword(auth, email, password)
-//   // runInAction(() => (this.user = user))
-
-//   // const date = new Date().getTime()
-//   // const storageRef = ref(storage, `${displayName + date}`)
-
-//   // await uploadBytesResumable(storageRef, avatar)
-//   // const avatarURL = await getDownloadURL(storageRef)
-
-//   // await updateProfile(user, {
-//   //   displayName,
-//   //   photoURL: avatarURL,
-//   // })
-
-//   // await setDoc(doc(db, "users", user.uid), {
-//   //   uid: user.uid,
-//   //   displayName,
-//   //   email,
-//   //   photoURL: avatarURL,
-//   // })
-
-//   // await setDoc(doc(db, "userChats", user.uid), {})
-
-//   // runInAction(() => {
-//   //   this.isLoading = false
-//   // })
-// }
