@@ -3,18 +3,18 @@ import "./ChatItem.scss"
 import cn from "classnames"
 import { observer } from "mobx-react-lite"
 import { FC } from "react"
-import { ICurrentUserChats } from "stores/chatStore"
+import { IUserChatInfo } from "stores/chatStore"
 
 import Avatar from "components/avatar/Avatar"
 
-interface IProps extends Omit<ICurrentUserChats, "date"> {
+interface IProps extends Omit<IUserChatInfo, "date"> {
   toggleChat: () => void
   isMyLastMessage: boolean
   isCurrentChat: boolean
 }
 
 const ChatItem: FC<IProps> = ({
-  userInfo,
+  recipient,
   lastMessage,
   toggleChat,
   isMyLastMessage,
@@ -22,9 +22,9 @@ const ChatItem: FC<IProps> = ({
 }) => {
   return (
     <div onClick={toggleChat} className={cn("chat-item", isCurrentChat && "current-chat")}>
-      <Avatar photoUrl={userInfo.photoURL} />
+      <Avatar photoUrl={recipient.photoURL} />
       <div className="chat-item__right-side">
-        <div className="chat-item__name">{userInfo.displayName}</div>
+        <div className="chat-item__name">{recipient.displayName}</div>
         <div className="chat-item__last-message">
           {isMyLastMessage && "You:"} {lastMessage?.text}
         </div>

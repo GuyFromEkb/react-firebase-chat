@@ -1,36 +1,32 @@
 import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
-import { makeAutoObservable, runInAction } from "mobx"
+import { makeAutoObservable, runInAction, toJS } from "mobx"
+import { IFireBaseDate, IUserChatInfoDb } from "types/IFirebase"
 
-import { db } from "../firebase"
+import { db, userChatsCol } from "../firebase"
 import { RootStore } from "./rootStore"
 import { IUser } from "./usersStore"
 
-export interface IUserChatInfo {
+export interface IRecipient {
   uid: string
   displayName: string
   photoURL: string
 }
 
-export interface IUserDateInfo {
-  seconds: number
-  nanoseconds: number
-}
-
-export interface ICurrentUserChats {
-  date: IUserDateInfo
-  userInfo: IUserChatInfo
-  lastMessage: {
+export interface IUserChatInfo {
+  date: IFireBaseDate
+  recipient: IRecipient
+  lastMessage?: {
     senderId: string
     text: string
   }
 }
 export interface ICurrentChatInfo {
   id: string
-  recipientUserInfo: IUserChatInfo
+  recipient: IRecipient
 }
 
 export class ChatStore {
-  private _chats: [string, ICurrentUserChats][] = []
+  private _chats: [string, IUserChatInfoDb][] = []
   private _rootStore: RootStore
   isLoadingCreateNewChat = false
   currentChatInfo: ICurrentChatInfo | null = null
@@ -40,10 +36,10 @@ export class ChatStore {
     makeAutoObservable(this)
   }
 
-  toggleCurrentChat = (chatId: string, recipientUserInfo: IUserChatInfo) => {
+  toggleCurrentChat = (chatId: string, recipient: IRecipient) => {
     this.currentChatInfo = {
       id: chatId,
-      recipientUserInfo: recipientUserInfo,
+      recipient,
     }
   }
 
@@ -54,40 +50,37 @@ export class ChatStore {
         : user.uid + this._rootStore.currentUser?.uid
 
     try {
-      console.log("zawel v try")
-      const docRef = doc(db, "chats", combinedId)
-      const docSnap = await getDoc(docRef)
+      const userChatsRef = doc(userChatsCol, combinedId)
+      const userChatsSnap = await getDoc(userChatsRef)
 
       runInAction(() => {
         this.isLoadingCreateNewChat = true
       })
 
-      if (!docSnap.exists()) {
+      if (!userChatsSnap.exists()) {
         await Promise.all([
           setDoc(doc(db, "chats", combinedId), {
             messages: [],
           }),
-          updateDoc(doc(db, "userChats", this._rootStore.currentUser?.uid!), {
-            [combinedId + ".userInfo"]: {
-              uid: user.uid,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
+          updateDoc(doc(userChatsCol, this._rootStore.currentUser?.uid!), {
+            [combinedId]: {
+              date: Timestamp.now(),
+              recipient: {
+                uid: user.uid,
+              },
             },
-            [combinedId + ".date"]: Timestamp.now(),
-            // [combinedId + ".date"]: serverTimestamp(),
           }),
-          updateDoc(doc(db, "userChats", user.uid), {
-            [combinedId + ".userInfo"]: {
-              uid: this._rootStore.currentUser?.uid,
-              displayName: this._rootStore.currentUser?.displayName,
-              photoURL: this._rootStore.currentUser?.photoURL,
+          updateDoc(doc(userChatsCol, user.uid), {
+            [combinedId]: {
+              date: Timestamp.now(),
+              recipient: {
+                uid: this._rootStore.currentUser?.uid,
+              },
             },
-            [combinedId + ".date"]: Timestamp.now(),
           }),
         ])
       }
     } finally {
-      console.log("zawel v final")
       runInAction(() => {
         this.isLoadingCreateNewChat = false
         this.toggleCurrentChat(combinedId, user)
@@ -96,9 +89,9 @@ export class ChatStore {
   }
 
   subToFecthUserChats = async () => {
-    const docRef = doc(db, "userChats", this._rootStore.currentUser?.uid!)
+    const userChatsRef = doc(userChatsCol, this._rootStore.currentUser?.uid!)
 
-    return onSnapshot(docRef, (doc) => {
+    return onSnapshot(userChatsRef, (doc) => {
       const userChats = doc.data()
       if (userChats) {
         runInAction(() => (this._chats = Object.entries(userChats)))
@@ -113,21 +106,42 @@ export class ChatStore {
   }
 
   firstRenderfetchUsersChats = async () => {
-    const docRef = doc(db, "userChats", this._rootStore.currentUser?.uid!)
-    const docSnapshot = await getDoc(docRef)
+    const userChatsRef = doc(userChatsCol, this._rootStore.currentUser?.uid!)
+    const userChatsSnap = await getDoc(userChatsRef)
 
     runInAction(() => {
-      if (docSnapshot.exists()) {
-        const userChats = docSnapshot.data()
+      if (userChatsSnap.exists()) {
+        const userChats = userChatsSnap.data()
         this._chats = Object.entries(userChats)
       }
     })
   }
 
-  get chats() {
-    return this._chats
-      .filter((chat) => chat[1].lastMessage)
-      .slice()
-      .sort((a, b) => b[1].date?.seconds - a[1].date?.seconds)
+  get chats(): [string, IUserChatInfo][] {
+    return (
+      this._chats
+        //в чате есть сообщение
+        .filter((chat) => chat[1].lastMessage)
+        //сортировка по дате получнеия
+        .sort((a, b) => b[1].date?.seconds - a[1].date?.seconds)
+        //добавление данных об отправителие (photoUrl displayName)
+        .map(([chatId, chatInfo]) => {
+          console.log("this._rootStore.usersStore.users", toJS(this._rootStore.usersStore.users))
+          console.log("chatInfo.recipient.uid", toJS(chatInfo))
+          const recipientUser = this._rootStore.usersStore.users.find(
+            (user) => user.uid === chatInfo.recipient.uid
+          )!
+          const ChatInfoWithRecipientData = {
+            ...chatInfo,
+            recipient: {
+              uid: chatInfo.recipient.uid,
+              photoURL: recipientUser.photoURL,
+              displayName: recipientUser.displayName,
+            },
+          }
+
+          return [chatId, ChatInfoWithRecipientData]
+        })
+    )
   }
 }

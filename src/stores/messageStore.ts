@@ -69,7 +69,7 @@ export class MessageStore {
     if (!currentChat) return
 
     const docRefCurrentUserInChatList = doc(db, "userChats", currentUserId)
-    const docRefRecipientUserInChatList = doc(db, "userChats", currentChat.recipientUserInfo.uid)
+    const docRefRecipientUserInChatList = doc(db, "userChats", currentChat.recipient.uid)
 
     await Promise.all([
       updateDoc(docRefCurrentUserInChatList, {

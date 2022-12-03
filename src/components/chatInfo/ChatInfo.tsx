@@ -9,7 +9,7 @@ const ChatInfo: FC = () => {
   const { isLoadingCreateNewChat, currentChatInfo } = chatStore
   return (
     <div className="chat-info">
-      <span>{!isLoadingCreateNewChat && currentChatInfo?.recipientUserInfo.displayName}</span>
+      <span>{!isLoadingCreateNewChat && currentChatInfo?.recipient.displayName}</span>
     </div>
   )
 }

@@ -53,7 +53,7 @@ const MessageList: FC = () => {
           avatarUrl={
             message.senderId === currentUser?.uid
               ? currentUser?.photoURL!
-              : currentChatInfo?.recipientUserInfo.photoURL
+              : currentChatInfo?.recipient.photoURL
           }
           refLastMessage={idx === 0 ? refLastMessage : undefined}
         />

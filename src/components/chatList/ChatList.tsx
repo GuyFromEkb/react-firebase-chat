@@ -30,8 +30,8 @@ const ChatList: FC = () => {
             isCurrentChat={currentChatInfo?.id === chatId}
             isMyLastMessage={currentUser?.uid === chatRecipientData.lastMessage?.senderId}
             lastMessage={chatRecipientData.lastMessage}
-            userInfo={chatRecipientData.userInfo}
-            toggleChat={() => toggleCurrentChat(chatId, chatRecipientData.userInfo)}
+            recipient={chatRecipientData.recipient}
+            toggleChat={() => toggleCurrentChat(chatId, chatRecipientData.recipient)}
             key={chatId}
           />
         ))}
