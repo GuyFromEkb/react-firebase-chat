@@ -2,18 +2,26 @@ import "./UserList.scss"
 
 import { useStore } from "hooks/useStore"
 import { observer } from "mobx-react-lite"
-import { FC } from "react"
-import { IUser } from "stores/usersStore"
+import { FC, useEffect } from "react"
+import { IUserDb } from "types/IFirebase"
 
 import Accordion from "components/accordion/Accordion"
 import UserItem from "components/userItem/UserItem"
 
 const UserList: FC = () => {
   const { usersStore, chatStore } = useStore()
-  const { users } = usersStore
+  const { users, subToFecthUser } = usersStore
   const { createChat } = chatStore
 
-  const handleClick = (user: IUser) => () => {
+  useEffect(() => {
+    const unsub = subToFecthUser()
+
+    return () => {
+      unsub()
+    }
+  }, [subToFecthUser])
+
+  const handleClick = (user: IUserDb) => () => {
     createChat(user)
   }
 

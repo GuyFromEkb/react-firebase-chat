@@ -1,45 +1,42 @@
-import { collection, getDocs } from "firebase/firestore"
+import { collection, getDocs, onSnapshot, query } from "firebase/firestore"
 import { makeAutoObservable, runInAction } from "mobx"
+import { IUserDb } from "types/IFirebase"
 
-import { db } from "../firebase"
+import { db, usersCol } from "../firebase"
 import { RootStore } from "./rootStore"
 
-export interface IUser {
-  displayName: string
-  email: string
-  photoURL: string
-  uid: string
-}
-
 export class UsersStore {
-  private _users: IUser[] = []
+  private _users: IUserDb[] = []
   private _rootStore: RootStore
   isLoading = false
-  //TODO : подписка на юзеров!
   constructor(rootStore: RootStore) {
     this._rootStore = rootStore
     makeAutoObservable(this)
   }
 
-  // private _fetchUsers = async () => {
-  //   this.isLoading = true
-  //   const querySnapshot = await getDocs(collection(db, "users"))
+  subToFecthUser = () => {
+    const querySnapshotUsers = query(usersCol)
 
-  //   runInAction(() => {
-  //     querySnapshot.forEach((doc) => {
-  //       const user = doc.data() as IUser
-  //       this._users.push(user)
-  //     })
-  //     this.isLoading = false
-  //   })
-  // }
+    return onSnapshot(querySnapshotUsers, (querySnapshot) => {
+      const buffUsers: IUserDb[] = []
+
+      querySnapshot.forEach((doc) => {
+        const user = doc.data()
+        buffUsers.push(user)
+      })
+
+      runInAction(() => {
+        this._users = buffUsers
+      })
+    })
+  }
 
   firstRenderfetchUsers = async () => {
     const querySnapshot = await getDocs(collection(db, "users"))
 
     runInAction(() => {
       querySnapshot.forEach((doc) => {
-        const user = doc.data() as IUser
+        const user = doc.data() as IUserDb
         this._users.push(user)
       })
     })

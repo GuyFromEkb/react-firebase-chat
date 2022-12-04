@@ -1,10 +1,9 @@
 import { doc, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
-import { IFireBaseDate, IUserChatInfoDb } from "types/IFirebase"
+import { IFireBaseDate, IUserChatInfoDb, IUserDb } from "types/IFirebase"
 
 import { db, userChatsCol } from "../firebase"
 import { RootStore } from "./rootStore"
-import { IUser } from "./usersStore"
 
 export interface IRecipient {
   uid: string
@@ -43,7 +42,7 @@ export class ChatStore {
     }
   }
 
-  createChat = async (user: IUser) => {
+  createChat = async (user: IUserDb) => {
     const combinedId =
       this._rootStore.currentUser?.uid! > user.uid
         ? this._rootStore.currentUser?.uid + user.uid
@@ -97,12 +96,6 @@ export class ChatStore {
         runInAction(() => (this._chats = Object.entries(userChats)))
       }
     })
-
-    // if (doc.metadata.hasPendingWrites) {
-    //   // Local changes have not yet been written to the backend
-    // } else {
-    //   // Changes have been written to the backend
-    // }
   }
 
   firstRenderfetchUsersChats = async () => {
@@ -126,8 +119,6 @@ export class ChatStore {
         .sort((a, b) => b[1].date?.seconds - a[1].date?.seconds)
         //добавление данных об отправителие (photoUrl displayName)
         .map(([chatId, chatInfo]) => {
-          console.log("this._rootStore.usersStore.users", toJS(this._rootStore.usersStore.users))
-          console.log("chatInfo.recipient.uid", toJS(chatInfo))
           const recipientUser = this._rootStore.usersStore.users.find(
             (user) => user.uid === chatInfo.recipient.uid
           )!
@@ -145,3 +136,16 @@ export class ChatStore {
     )
   }
 }
+
+// [combinedId + ".date"]: serverTimestamp(),
+//Если при добавлении даты, использовать serverTimestamp
+//То при подписке ( onSnapshot ), запрос будет проходить 2 раза...
+
+//Что бы этого избежать можно использовать либо: Timestamp.now()
+
+//либо проверку:
+// if (doc.metadata.hasPendingWrites) {
+//   // Local changes have not yet been written to the backend
+// } else {
+//   // Changes have been written to the backend
+// }

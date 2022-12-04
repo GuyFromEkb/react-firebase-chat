@@ -20,6 +20,13 @@ export interface IUserChatInfoDb {
   }
 }
 
+export interface IUserDb {
+  displayName: string
+  email: string
+  photoURL: string
+  uid: string
+}
+
 export interface IChatDB {
   messages: IMessage[]
 }
