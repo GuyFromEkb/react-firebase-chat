@@ -12,7 +12,6 @@ interface IProps {
 }
 
 const Avatar: FC<IProps> = ({ className, photoUrl, height }) => {
-  console.log("photoUrl", photoUrl)
   return (
     <img
       className={cn("avatar-el", className)}
