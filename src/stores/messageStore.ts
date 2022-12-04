@@ -3,7 +3,7 @@ import { makeAutoObservable, runInAction } from "mobx"
 import { IMessageDb } from "types/IFirebase"
 import { v4 as uuid } from "uuid"
 
-import { db } from "../firebase"
+import { db, сhatsCol } from "../firebase"
 import { getStoregeImgItemUrls } from "../utils/firebase/storage"
 import { RootStore } from "./rootStore"
 
@@ -27,11 +27,11 @@ export class MessageStore {
   subToFecthMessages = () => {
     const currentChatId = this._rootStore.chatStore.currentChatInfo?.id!
 
-    const docRef = doc(db, "chats", currentChatId)
+    const docRef = doc(сhatsCol, currentChatId)
 
     return onSnapshot(docRef, (doc) => {
       const messages = doc.data()
-      runInAction(() => (this._messages = messages?.messages as IMessageDb[]))
+      runInAction(() => (this._messages = messages?.messages || []))
     })
   }
 
@@ -40,7 +40,7 @@ export class MessageStore {
     const currentChat = this._rootStore.chatStore.currentChatInfo
     if (!currentChat) return
 
-    const docRefChat = doc(db, "chats", currentChat.id)
+    const docRefChat = doc(сhatsCol, currentChat.id)
 
     this.isLoading.files = true
     try {

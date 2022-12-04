@@ -137,10 +137,8 @@ export class ChatStore {
   }
 }
 
-// [combinedId + ".date"]: serverTimestamp(),
-//Если при добавлении даты, использовать serverTimestamp
+//Если при добавлении даты, использовать serverTimestamp(),
 //То при подписке ( onSnapshot ), запрос будет проходить 2 раза...
-
 //Что бы этого избежать можно использовать либо: Timestamp.now()
 
 //либо проверку:
@@ -149,3 +147,13 @@ export class ChatStore {
 // } else {
 //   // Changes have been written to the backend
 // }
+
+//Пример из интернета, где нужно ссылку на другое поле в базе
+//reference type in fild
+// post = {
+//   content: "content...",
+//   title: "impressive title",
+//   user: doc("users", user.id)  //возвращает коллекцию, данные нужно получать через запрос
+// };
+
+// db.collection('posts').add(post)

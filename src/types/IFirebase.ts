@@ -26,9 +26,7 @@ export interface IUserDb {
 }
 
 export interface IChatDb {
-  [chatId: string]: {
-    messages: IMessageDb[]
-  }
+  messages: IMessageDb[]
 }
 
 export interface IMessageDb {
