@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
 import { collection, CollectionReference, DocumentData, getFirestore } from "firebase/firestore"
 import { getStorage } from "firebase/storage"
-import { IUserChatDb, IUserDb } from "types/IFirebase"
+import { IChatDb, IUserChatDb, IUserDb } from "types/IFirebase"
 
 const firebaseConfig = {
   apiKey: "AIzaSyAlg8IkwKI_fxN2z3_cM4XgR1EaHbMC4LE",
@@ -25,4 +25,4 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
 
 export const usersCol = createCollection<IUserDb>("users")
 export const userChatsCol = createCollection<IUserChatDb>("userChats")
-// export const сhatsCol = createCollection<IChatDB>("chats")
+export const сhatsCol = createCollection<IChatDb>("chats")

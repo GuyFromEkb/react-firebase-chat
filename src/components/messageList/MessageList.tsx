@@ -6,24 +6,6 @@ import { FC, useEffect, useRef } from "react"
 
 import MessageItem from "components/messageItem/MessageItem"
 
-export interface Date {
-  seconds: number
-  nanoseconds: number
-}
-
-export interface IMessage {
-  senderId: string
-  text: string
-  id: string
-  files: {
-    img: string[]
-  }
-  date: {
-    seconds: number
-    nanoseconds: number
-  }
-}
-
 const MessageList: FC = () => {
   const { chatStore, currentUser, messageStore } = useStore()
   const { currentChatInfo } = chatStore

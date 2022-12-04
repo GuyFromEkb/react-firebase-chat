@@ -1,5 +1,3 @@
-import { IMessage } from "components/messageList/MessageList"
-
 export interface IUserChatDb {
   [chatId: string]: IUserChatInfoDb
 }
@@ -27,6 +25,16 @@ export interface IUserDb {
   uid: string
 }
 
-export interface IChatDB {
-  messages: IMessage[]
+export interface IChatDb {
+  messages: IMessageDb[]
+}
+
+export interface IMessageDb {
+  senderId: string
+  text: string
+  id: string
+  files: {
+    img: string[]
+  }
+  date: IFireBaseDate
 }

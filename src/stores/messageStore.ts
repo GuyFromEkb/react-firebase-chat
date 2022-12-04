@@ -1,14 +1,14 @@
 import { arrayUnion, doc, onSnapshot, Timestamp, updateDoc } from "firebase/firestore"
 import { makeAutoObservable, runInAction } from "mobx"
+import { IMessageDb } from "types/IFirebase"
 import { v4 as uuid } from "uuid"
 
-import { IMessage } from "../components/messageList/MessageList"
 import { db } from "../firebase"
 import { getStoregeImgItemUrls } from "../utils/firebase/storage"
 import { RootStore } from "./rootStore"
 
 export class MessageStore {
-  private _messages: IMessage[] = []
+  private _messages: IMessageDb[] = []
   private _rootStore: RootStore
   isLoading = {
     files: false,
@@ -31,7 +31,7 @@ export class MessageStore {
 
     return onSnapshot(docRef, (doc) => {
       const messages = doc.data()
-      runInAction(() => (this._messages = messages?.messages as IMessage[]))
+      runInAction(() => (this._messages = messages?.messages as IMessageDb[]))
     })
   }
 
