@@ -9,9 +9,10 @@ import Accordion from "components/accordion/Accordion"
 import UserItem from "components/userItem/UserItem"
 
 const UserList: FC = () => {
-  const { usersStore, chatStore } = useStore()
-  const { users } = usersStore
-  const { createChat } = chatStore
+  const {
+    usersStore: { users },
+    chatStore: { createChat },
+  } = useStore()
 
   const handleClick = (user: IUser) => () => {
     createChat(user)

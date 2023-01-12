@@ -1,15 +1,20 @@
 import "./NavBar.scss"
 
 import { useStore } from "hooks/useStore"
-import { FC, useState } from "react"
+import { observer } from "mobx-react-lite"
+import { FC } from "react"
 
 import Avatar from "components/avatar/Avatar"
 import ModalProfileSetting from "components/modal/Modal"
 
 const NavBar: FC = () => {
-  const { authStore } = useStore()
-  const { logOut, user } = authStore
-  const [edditProfileModal, setEdditProfileModal] = useState(false)
+  const {
+    authStore: { logOut, user },
+    profileStore: {
+      modal: { open },
+    },
+  } = useStore()
+
   return (
     <>
       <div className="navbar">
@@ -17,18 +22,15 @@ const NavBar: FC = () => {
           <Avatar className="navbar__avatar" photoUrl={user?.photoURL} />
           <div>{user?.displayName}</div>
         </div>
-        <button onClick={() => setEdditProfileModal(!edditProfileModal)}>test</button>
+        <button onClick={open}>test</button>
         <button onClick={logOut} className="navbar__logout">
           Logout
         </button>
       </div>
 
-      <ModalProfileSetting
-        isShow={edditProfileModal}
-        onClose={() => setEdditProfileModal(!edditProfileModal)}
-      />
+      <ModalProfileSetting />
     </>
   )
 }
 
-export default NavBar
+export default observer(NavBar)

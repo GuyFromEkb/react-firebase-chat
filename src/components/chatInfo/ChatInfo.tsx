@@ -5,8 +5,10 @@ import { observer } from "mobx-react-lite"
 import { FC } from "react"
 
 const ChatInfo: FC = () => {
-  const { chatStore } = useStore()
-  const { isLoadingCreateNewChat, currentChatInfo } = chatStore
+  const {
+    chatStore: { isLoadingCreateNewChat, currentChatInfo },
+  } = useStore()
+
   return (
     <div className="chat-info">
       <span>{!isLoadingCreateNewChat && currentChatInfo?.recipientUserInfo.displayName}</span>

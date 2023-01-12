@@ -25,9 +25,12 @@ export interface IMessage {
 }
 
 const MessageList: FC = () => {
-  const { chatStore, currentUser, messageStore } = useStore()
-  const { currentChatInfo } = chatStore
-  const { subToFecthMessages, messages, reset } = messageStore
+  const {
+    chatStore: { currentChatInfo },
+    currentUser,
+    messageStore: { subToFecthMessages, messages, reset },
+  } = useStore()
+
   const refLastMessage = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

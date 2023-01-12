@@ -8,13 +8,11 @@ import UserList from "components/userList/UserList"
 
 const SideBar: FC = () => {
   return (
-    <>
-      <div className="sidebar">
-        <NavBar />
-        <UserList />
-        <ChatList />
-      </div>
-    </>
+    <div className="sidebar">
+      <NavBar />
+      <UserList />
+      <ChatList />
+    </div>
   )
 }
 

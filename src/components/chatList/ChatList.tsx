@@ -7,8 +7,10 @@ import { FC, useEffect } from "react"
 import ChatItem from "components/chatItem/ChatItem"
 
 const ChatList: FC = () => {
-  const { chatStore, currentUser } = useStore()
-  const { subToFecthUserChats, chats, toggleCurrentChat, currentChatInfo } = chatStore
+  const {
+    chatStore: { subToFecthUserChats, chats, toggleCurrentChat, currentChatInfo },
+    currentUser,
+  } = useStore()
 
   useEffect(() => {
     const getChats = async () => {

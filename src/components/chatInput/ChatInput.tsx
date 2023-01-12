@@ -16,8 +16,9 @@ export interface IPervImg {
 }
 
 const ChatInput: FC = () => {
-  const { messageStore } = useStore()
-  const { postMessage, updateLastMessageInChats, isLoading } = messageStore
+  const {
+    messageStore: { postMessage, updateLastMessageInChats, isLoading },
+  } = useStore()
 
   const refInputFile = useRef<HTMLInputElement>(null)
   const [text, setText] = useState("")

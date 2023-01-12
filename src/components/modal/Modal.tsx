@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import emptyAvatar from "assets/img/avatarEmpty.png"
 import { ReactComponent as IconClose } from "assets/img/iconClose.svg"
 import { useStore } from "hooks/useStore"
+import { observer } from "mobx-react-lite"
 import { FC, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import * as yup from "yup"
@@ -20,19 +21,20 @@ const schema = yup
   })
   .required()
 
-interface IProps {
-  isShow: boolean
-  onClose: () => void
-}
-
 export interface IProfileInputs {
   displayName: string
   avatar?: FileList
 }
 
-const ModalProfileSetting: FC<IProps> = ({ isShow, onClose }) => {
-  const { profileStore } = useStore()
-  const { displayName, photoUrl } = profileStore
+const ModalProfileSetting: FC = () => {
+  const {
+    profileStore: {
+      displayName,
+      photoUrl,
+      modal: { isOpen, close },
+    },
+  } = useStore()
+
   const [prevAvatar, setPrevAvatar] = useState("")
 
   const {
@@ -65,10 +67,10 @@ const ModalProfileSetting: FC<IProps> = ({ isShow, onClose }) => {
   }
 
   return (
-    <Portal handleClose={onClose} isShow={isShow}>
+    <Portal handleClose={close} isShow={isOpen}>
       <div className="profile">
-        <IconClose onClick={onClose} className="profile__close" />
-        <h4 className="profile__title">Settings</h4>
+        <IconClose onClick={close} className="profile__close" />
+        <h4 className="profile__title">Settings12</h4>
 
         <form onSubmit={handleSubmit(onSubmit)} className="form-reg">
           <label>
@@ -105,4 +107,4 @@ const ModalProfileSetting: FC<IProps> = ({ isShow, onClose }) => {
   )
 }
 
-export default ModalProfileSetting
+export default observer(ModalProfileSetting)
